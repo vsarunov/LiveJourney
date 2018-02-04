@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.PasswordTextBox = new System.Windows.Forms.TextBox();
+            this.PasswordLabel = new System.Windows.Forms.Label();
             this.UserNameLabel = new System.Windows.Forms.Label();
             this.UsernameTextbox = new System.Windows.Forms.TextBox();
-            this.PasswordLabel = new System.Windows.Forms.Label();
-            this.PasswordTextBox = new System.Windows.Forms.TextBox();
             this.SubmitButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -59,6 +59,28 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(283, 157);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
+            // PasswordTextBox
+            // 
+            this.PasswordTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.PasswordTextBox.Location = new System.Drawing.Point(3, 83);
+            this.PasswordTextBox.Name = "PasswordTextBox";
+            this.PasswordTextBox.Size = new System.Drawing.Size(180, 20);
+            this.PasswordTextBox.TabIndex = 3;
+            // 
+            // PasswordLabel
+            // 
+            this.PasswordLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PasswordLabel.AutoSize = true;
+            this.PasswordLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+            this.PasswordLabel.Location = new System.Drawing.Point(3, 60);
+            this.PasswordLabel.Name = "PasswordLabel";
+            this.PasswordLabel.Size = new System.Drawing.Size(277, 20);
+            this.PasswordLabel.TabIndex = 2;
+            this.PasswordLabel.Text = "Password:";
+            // 
             // UserNameLabel
             // 
             this.UserNameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -80,28 +102,6 @@
             this.UsernameTextbox.Name = "UsernameTextbox";
             this.UsernameTextbox.Size = new System.Drawing.Size(180, 20);
             this.UsernameTextbox.TabIndex = 1;
-            // 
-            // PasswordLabel
-            // 
-            this.PasswordLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.PasswordLabel.AutoSize = true;
-            this.PasswordLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this.PasswordLabel.Location = new System.Drawing.Point(3, 60);
-            this.PasswordLabel.Name = "PasswordLabel";
-            this.PasswordLabel.Size = new System.Drawing.Size(277, 20);
-            this.PasswordLabel.TabIndex = 2;
-            this.PasswordLabel.Text = "Password:";
-            // 
-            // PasswordTextBox
-            // 
-            this.PasswordTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.PasswordTextBox.Location = new System.Drawing.Point(3, 83);
-            this.PasswordTextBox.Name = "PasswordTextBox";
-            this.PasswordTextBox.Size = new System.Drawing.Size(180, 20);
-            this.PasswordTextBox.TabIndex = 3;
             // 
             // SubmitButton
             // 

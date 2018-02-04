@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccess.Repository;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,6 +15,7 @@ namespace LiveJourney
     {
         public Form1()
         {
+            new MainRepository();
             InitializeComponent();
         }
     }
