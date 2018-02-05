@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Dapper;
+using Infrastructure.Entities;
+using System;
 using System.Data.SQLite;
+using System.Linq;
 
 namespace DataAccess.Repository
 {
@@ -28,7 +31,9 @@ namespace DataAccess.Repository
             AdminType INTEGER);
             ";
 
-        private static string INSERT_ADMIN_USER = @"INSERT INTO UserTable (Username,Password,AdminType) VALUES(@Username,@Password,@AdminType)";
+        private static string INSERT_ADMIN_USER = @"INSERT INTO UserTable (Username,Password,AdminType) VALUES(@Username,@Password,@AdminType);";
+
+        private static string GET_USER = @"SELECT * FROM UserTable WHERE Username = :Username;";
 
         private void CreateUserTable()
         {
@@ -51,6 +56,11 @@ namespace DataAccess.Repository
 
         private void InsertAdminUser()
         {
+            if (this.GetUser("Admin") != null)
+            {
+                return;
+            }
+
             try
             {
                 using (var sqliteConnection = new SQLiteConnection(this.DatabasePath))
@@ -69,6 +79,25 @@ namespace DataAccess.Repository
             catch (Exception e)
             {
                 throw e;
+            }
+        }
+
+        public UserModel GetUser(string username)
+        {
+            try
+            {
+                using (var sqliteConnection = new SQLiteConnection(this.DatabasePath))
+                {
+                    sqliteConnection.Open();
+                    return sqliteConnection.Query<UserModel>(GET_USER, new
+                    {
+                        Username = username
+                    }).FirstOrDefault();
+                }
+            }
+            catch (Exception e)
+            {
+                return new UserModel();
             }
         }
     }

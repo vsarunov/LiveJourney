@@ -65,6 +65,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.PasswordTextBox.Location = new System.Drawing.Point(3, 83);
             this.PasswordTextBox.Name = "PasswordTextBox";
+            this.PasswordTextBox.PasswordChar = '*';
             this.PasswordTextBox.Size = new System.Drawing.Size(180, 20);
             this.PasswordTextBox.TabIndex = 3;
             // 
@@ -113,6 +114,7 @@
             this.SubmitButton.TabIndex = 4;
             this.SubmitButton.Text = "Submit";
             this.SubmitButton.UseVisualStyleBackColor = true;
+            this.SubmitButton.Click += new System.EventHandler(this.SubmitButton_Click);
             // 
             // Form1
             // 
