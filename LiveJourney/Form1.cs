@@ -1,12 +1,5 @@
 ﻿using DataAccess.Repository;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace LiveJourney
@@ -14,6 +7,7 @@ namespace LiveJourney
     public partial class Form1 : Form
     {
         private IMainRepository MainRepo = new MainRepository();
+        private bool ShouldClose = true;
 
         public Form1()
         {
@@ -28,7 +22,8 @@ namespace LiveJourney
                 var user = MainRepo.GetUser(this.UsernameTextbox.Text);
                 if (this.PasswordTextBox.Text == user.Password && user.AdminType == 1)
                 {
-                    new ManagementForm().Show();
+                    ShouldClose = false;
+                    new ManagementForm(MainRepo).Show();
                     this.Close();
                 }
             }
@@ -37,6 +32,14 @@ namespace LiveJourney
         private bool CheckIfValidInput(string value)
         {
             return string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value);
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (ShouldClose)
+            {
+                Application.Exit();
+            }
         }
     }
 }

@@ -4,7 +4,7 @@
     using System.Drawing;
     using System.Windows.Forms;
 
-    internal class MyBox : TextBox
+    public class MyBox : TextBox
     {
         private const int WM_PASTE = 0x0302;
 

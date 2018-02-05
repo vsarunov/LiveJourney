@@ -54,7 +54,8 @@
             this.DisntanceLabel = new System.Windows.Forms.Label();
             this.StationNameTextBox = new System.Windows.Forms.TextBox();
             this.AddStationButton = new System.Windows.Forms.Button();
-            this.userControl11 = new MyCustomTextBox.UserControl1();
+            this.MyUniqueTextBox = new MyCustomTextBox.MyBox();
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -164,17 +165,21 @@
             this.AddTrainLineButton.TabIndex = 3;
             this.AddTrainLineButton.Text = "Add Train Line";
             this.AddTrainLineButton.UseVisualStyleBackColor = true;
+            this.AddTrainLineButton.Click += new System.EventHandler(this.AddTrainLineButton_Click);
             // 
             // TrainLineColourComboBox
             // 
             this.TrainLineColourComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.TrainLineColourComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.TrainLineColourComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.TrainLineColourComboBox.FormattingEnabled = true;
             this.TrainLineColourComboBox.Location = new System.Drawing.Point(3, 80);
             this.TrainLineColourComboBox.Name = "TrainLineColourComboBox";
             this.TrainLineColourComboBox.Size = new System.Drawing.Size(249, 21);
             this.TrainLineColourComboBox.TabIndex = 4;
+            this.TrainLineColourComboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.TrainLineColourComboBox_DrawItem);
             // 
             // tableLayoutPanel4
             // 
@@ -203,21 +208,23 @@
             this.TrainLineListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TrainLineListView.FullRowSelect = true;
             this.TrainLineListView.Location = new System.Drawing.Point(3, 3);
+            this.TrainLineListView.MultiSelect = false;
             this.TrainLineListView.Name = "TrainLineListView";
             this.TrainLineListView.Size = new System.Drawing.Size(269, 616);
             this.TrainLineListView.TabIndex = 0;
             this.TrainLineListView.UseCompatibleStateImageBehavior = false;
             this.TrainLineListView.View = System.Windows.Forms.View.Details;
+            this.TrainLineListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.TrainLineListView_ItemSelectionChanged);
             // 
             // columnHeader1
             // 
             this.columnHeader1.Text = "Train Line name";
-            this.columnHeader1.Width = 0;
+            this.columnHeader1.Width = 88;
             // 
             // columnHeader2
             // 
             this.columnHeader2.Text = "Train Line Colour";
-            this.columnHeader2.Width = 0;
+            this.columnHeader2.Width = 177;
             // 
             // DeleteTrainLineButton
             // 
@@ -230,6 +237,7 @@
             this.DeleteTrainLineButton.TabIndex = 1;
             this.DeleteTrainLineButton.Text = "Delete Train Line";
             this.DeleteTrainLineButton.UseVisualStyleBackColor = true;
+            this.DeleteTrainLineButton.Click += new System.EventHandler(this.DeleteTrainLineButton_Click);
             // 
             // EditTrainLineButton
             // 
@@ -279,30 +287,36 @@
             // StationListView
             // 
             this.StationListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader5,
             this.columnHeader3,
             this.columnHeader4});
             this.StationListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.StationListView.Enabled = false;
             this.StationListView.Location = new System.Drawing.Point(3, 3);
             this.StationListView.Name = "StationListView";
             this.StationListView.Size = new System.Drawing.Size(314, 619);
             this.StationListView.TabIndex = 0;
             this.StationListView.UseCompatibleStateImageBehavior = false;
+            this.StationListView.View = System.Windows.Forms.View.Details;
             // 
             // columnHeader3
             // 
+            this.columnHeader3.DisplayIndex = 0;
             this.columnHeader3.Text = "Station Name";
-            this.columnHeader3.Width = -2;
+            this.columnHeader3.Width = 76;
             // 
             // columnHeader4
             // 
-            this.columnHeader4.Text = "Distance to the next stations";
-            this.columnHeader4.Width = -2;
+            this.columnHeader4.DisplayIndex = 1;
+            this.columnHeader4.Text = "Distance To Previous Station";
+            this.columnHeader4.Width = 150;
             // 
             // DeleteStationButton
             // 
             this.DeleteStationButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.DeleteStationButton.Enabled = false;
             this.DeleteStationButton.Location = new System.Drawing.Point(3, 628);
             this.DeleteStationButton.Name = "DeleteStationButton";
             this.DeleteStationButton.Size = new System.Drawing.Size(314, 39);
@@ -315,6 +329,7 @@
             this.EditStationButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.EditStationButton.Enabled = false;
             this.EditStationButton.Location = new System.Drawing.Point(3, 673);
             this.EditStationButton.Name = "EditStationButton";
             this.EditStationButton.Size = new System.Drawing.Size(314, 43);
@@ -330,7 +345,7 @@
             this.tableLayoutPanel7.Controls.Add(this.DisntanceLabel, 0, 2);
             this.tableLayoutPanel7.Controls.Add(this.StationNameTextBox, 0, 1);
             this.tableLayoutPanel7.Controls.Add(this.AddStationButton, 0, 4);
-            this.tableLayoutPanel7.Controls.Add(this.userControl11, 0, 3);
+            this.tableLayoutPanel7.Controls.Add(this.MyUniqueTextBox, 0, 3);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
@@ -368,13 +383,14 @@
             this.DisntanceLabel.Name = "DisntanceLabel";
             this.DisntanceLabel.Size = new System.Drawing.Size(319, 27);
             this.DisntanceLabel.TabIndex = 2;
-            this.DisntanceLabel.Text = "Distance To Previous Stations:";
+            this.DisntanceLabel.Text = "Distance To Previous Stations (km):";
             // 
             // StationNameTextBox
             // 
             this.StationNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.StationNameTextBox.Enabled = false;
             this.StationNameTextBox.Location = new System.Drawing.Point(3, 20);
             this.StationNameTextBox.Name = "StationNameTextBox";
             this.StationNameTextBox.Size = new System.Drawing.Size(319, 20);
@@ -385,6 +401,7 @@
             this.AddStationButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.AddStationButton.Enabled = false;
             this.AddStationButton.Location = new System.Drawing.Point(3, 108);
             this.AddStationButton.Name = "AddStationButton";
             this.AddStationButton.Size = new System.Drawing.Size(319, 32);
@@ -392,13 +409,22 @@
             this.AddStationButton.Text = "Add Station";
             this.AddStationButton.UseVisualStyleBackColor = true;
             // 
-            // userControl11
+            // MyUniqueTextBox
             // 
-            this.userControl11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.userControl11.Location = new System.Drawing.Point(3, 73);
-            this.userControl11.Name = "userControl11";
-            this.userControl11.Size = new System.Drawing.Size(319, 29);
-            this.userControl11.TabIndex = 5;
+            this.MyUniqueTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.MyUniqueTextBox.Enabled = false;
+            this.MyUniqueTextBox.Location = new System.Drawing.Point(3, 73);
+            this.MyUniqueTextBox.Name = "MyUniqueTextBox";
+            this.MyUniqueTextBox.Size = new System.Drawing.Size(319, 20);
+            this.MyUniqueTextBox.TabIndex = 0;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.DisplayIndex = 2;
+            this.columnHeader5.Text = "Station Nr.";
+            this.columnHeader5.Width = 62;
             // 
             // ManagementForm
             // 
@@ -408,6 +434,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "ManagementForm";
             this.Text = "ManagementForm";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ManagementForm_FormClosed);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
@@ -449,6 +476,7 @@
         private System.Windows.Forms.Label DisntanceLabel;
         private System.Windows.Forms.TextBox StationNameTextBox;
         private System.Windows.Forms.Button AddStationButton;
-        private MyCustomTextBox.UserControl1 userControl11;
+        private MyCustomTextBox.MyBox MyUniqueTextBox;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
     }
 }
