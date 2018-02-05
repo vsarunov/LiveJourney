@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MyTextBox")]
+[assembly: AssemblyTitle("MyCustomTextBox")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MyTextBox")]
+[assembly: AssemblyProduct("MyCustomTextBox")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("ac897d3e-a99b-463e-904f-4662d1201559")]
+[assembly: Guid("8951e451-6608-41cf-bda7-8455ffe055a5")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -1,18 +1,18 @@
-﻿namespace MyTextBox
+﻿namespace MyCustomTextBox
 {
     using System;
     using System.Drawing;
     using System.Windows.Forms;
 
-    internal class CustomTextBox : TextBox
+    internal class MyBox : TextBox
     {
         private const int WM_PASTE = 0x0302;
 
-        public CustomTextBox()
+        public MyBox()
         {
             this.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
+           | System.Windows.Forms.AnchorStyles.Left)
+           | System.Windows.Forms.AnchorStyles.Right)));
             this.Location = new System.Drawing.Point(3, 3);
             this.Name = "CustomTextBox";
             this.Size = new System.Drawing.Size(217, 20);
@@ -20,7 +20,6 @@
             this.TextChanged += this.textBox1_TextChanged;
             this.KeyPress += this.textBox1_KeyPress;
         }
-
 
         // Taken from http://net-informations.com/q/faq/txtbox.html
         private void textBox1_TextChanged(object sender, EventArgs e)

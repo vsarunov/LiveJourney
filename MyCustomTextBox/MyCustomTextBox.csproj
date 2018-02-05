@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AC897D3E-A99B-463E-904F-4662D1201559}</ProjectGuid>
+    <ProjectGuid>{8951E451-6608-41CF-BDA7-8455FFE055A5}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>MyTextBox</RootNamespace>
-    <AssemblyName>MyTextBox</AssemblyName>
+    <RootNamespace>MyCustomTextBox</RootNamespace>
+    <AssemblyName>MyCustomTextBox</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,21 +41,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomTextBox.cs">
+    <Compile Include="MyBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CustomTextBoxControl.cs">
+    <Compile Include="UserControl1.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomTextBoxControl.Designer.cs">
-      <DependentUpon>CustomTextBoxControl.cs</DependentUpon>
+    <Compile Include="UserControl1.Designer.cs">
+      <DependentUpon>UserControl1.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CustomTextBoxControl.resx">
-      <DependentUpon>CustomTextBoxControl.cs</DependentUpon>
+    <EmbeddedResource Include="UserControl1.resx">
+      <DependentUpon>UserControl1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

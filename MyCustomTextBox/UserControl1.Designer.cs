@@ -1,6 +1,6 @@
-﻿namespace MyTextBox
+﻿namespace MyCustomTextBox
 {
-    partial class CustomTextBoxController
+    partial class UserControl1
     {
         /// <summary>
         /// Required designer variable.
@@ -41,17 +41,17 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(223, 27);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(273, 29);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // CustomTextBoxController
+            // UserControl1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "CustomTextBoxController";
-            this.Size = new System.Drawing.Size(223, 27);
+            this.Name = "UserControl1";
+            this.Size = new System.Drawing.Size(273, 29);
             this.ResumeLayout(false);
 
         }
