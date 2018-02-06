@@ -25,6 +25,7 @@
             InitializeComponent();
             this.PopulateComboBoxWithColours();
             this.PopulateTrainLines();
+            this.PopulateStations();
             this.PopulateTrainLineListView();
         }
 
@@ -50,6 +51,15 @@
         {
             var TrainLineReadResult = this.MainRepo.ReadTrainLines();
             this.TrainLines.AddRange(TrainLineReadResult);
+        }
+
+        private void PopulateStations()
+        {
+            var stations = this.MainRepo.ReadStations();
+            foreach (var item in this.TrainLines)
+            {
+                item.Stations = stations.Where(x => x.TrainLineId == item.Id).ToList();
+            }
         }
 
         private void PopulateTrainLineListView()
@@ -126,28 +136,20 @@
 
         private void TrainLineListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
+            this.StationListView.Items.Clear();
             if (this.TrainLineListView.SelectedItems.Count != 0)
             {
                 var trainLine = this.TrainLines.Where(x => x.TrainLineName == this.TrainLineListView.SelectedItems[0].SubItems[0].Text).FirstOrDefault();
                 if (trainLine != null)
                 {
                     this.TurnFieldOnOf(true);
-                    this.PopulateStations(trainLine);
+                    this.PopulateStationListView(trainLine);
                 }
             }
             else
             {
                 this.TurnFieldOnOf(false);
                 this.StationListView.Items.Clear();
-            }
-        }
-
-        private void PopulateStations(TrainLine trainLine)
-        {
-            foreach (var item in trainLine.Stations)
-            {
-                var listViewItem = new ListViewItem(new[] { item.StationName, item.DistanceToPreviousStation.ToString(), item.Id.ToString() });
-                this.StationListView.Items.Add(listViewItem);
             }
         }
 
@@ -163,15 +165,7 @@
 
         private void EditTrainLineButton_Click(object sender, EventArgs e)
         {
-            if (this.TrainLineListView.SelectedItems.Count != 0)
-            {
-                var trainLine = this.TrainLines.Where(x => x.TrainLineName == this.TrainLineListView.SelectedItems[0].SubItems[0].Text).FirstOrDefault();
-                if (trainLine != null)
-                {
-                    new EditTrainLineForm(trainLine, this.TrainLines, this.MainRepo).ShowDialog();
-                    this.PopulateTrainLineListView();
-                }
-            }
+            this.EditTrainLine();
         }
 
         private void AddStationButton_Click(object sender, EventArgs e)
@@ -184,26 +178,35 @@
                     if (!this.CheckIfValidInput(this.StationNameTextBox.Text) && !this.CheckIfValidInput(this.MyUniqueTextBox.Text))
                     {
                         var previousStation = trainLine.Stations.Where(x => x.NextStationId == -1).FirstOrDefault();
-                        var newStation = new Station()
+
+                        var distance = double.Parse(this.MyUniqueTextBox.Text);
+                        if (previousStation != null && distance == 0)
                         {
-                            TrainLineId = trainLine.Id,
-                            StationName = this.StationNameTextBox.Text,
-                            DistanceToPreviousStation = double.Parse(this.MyUniqueTextBox.Text),
-                            PreviousStationId = previousStation == null ? -1 : previousStation.Id
-                        };
-                        var returnedId = this.MainRepo.InsertStation(newStation);
-                        newStation.Id = returnedId;
-                        if (previousStation != null)
-                        {
-                            previousStation.NextStationId = returnedId;
-                            this.MainRepo.UpdateStation(previousStation);
+                            MessageBox.Show("Distance to previous station cannot be 0 if there is a previosu stations");
                         }
+                        else
+                        {
+                            var newStation = new Station()
+                            {
+                                TrainLineId = trainLine.Id,
+                                StationName = this.StationNameTextBox.Text,
+                                DistanceToPreviousStation = double.Parse(this.MyUniqueTextBox.Text),
+                                PreviousStationId = previousStation == null ? -1 : previousStation.Id
+                            };
+                            var returnedId = this.MainRepo.InsertStation(newStation);
+                            newStation.Id = returnedId;
+                            if (previousStation != null)
+                            {
+                                previousStation.NextStationId = returnedId;
+                                this.MainRepo.UpdateStation(previousStation);
+                            }
 
-                        this.StationNameTextBox.Text = string.Empty;
-                        this.MyUniqueTextBox.Text = string.Empty;
+                            this.StationNameTextBox.Text = string.Empty;
+                            this.MyUniqueTextBox.Text = string.Empty;
 
-                        trainLine.Stations.Add(newStation);
-                        this.PopulateStationListView(trainLine);
+                            trainLine.Stations.Add(newStation);
+                            this.PopulateStationListView(trainLine);
+                        }
                     }
                 }
             }
@@ -214,7 +217,77 @@
             this.StationListView.Items.Clear();
             foreach (var item in trainLine.Stations)
             {
-                this.StationListView.Items.Add(new ListViewItem(new[] { item.StationName, item.DistanceToPreviousStation.ToString(), item.Id.ToString() }));
+                this.StationListView.Items.Add(new ListViewItem(new[] { item.Id.ToString(), item.StationName, item.DistanceToPreviousStation.ToString() }));
+            }
+        }
+
+        private void DeleteStationButton_Click(object sender, EventArgs e)
+        {
+            if (this.TrainLineListView.SelectedItems.Count != 0)
+            {
+                var trainLine = this.TrainLines.Where(x => x.TrainLineName == this.TrainLineListView.SelectedItems[0].SubItems[0].Text).FirstOrDefault();
+                if (trainLine != null)
+                {
+                    if (this.StationListView.SelectedItems.Count != 0)
+                    {
+                        var stationToDelete = trainLine.Stations.Where(x => x.StationName == this.StationListView.SelectedItems[0].SubItems[1].Text).FirstOrDefault();
+                        if (stationToDelete != null)
+                        {
+                            var previousStation = trainLine.Stations.Where(x => x.NextStationId == stationToDelete.Id).FirstOrDefault();
+                            var nextStation = trainLine.Stations.Where(x => x.PreviousStationId == stationToDelete.Id).FirstOrDefault();
+                            trainLine.Stations.Remove(stationToDelete);
+                            if (previousStation != null)
+                            {
+                                previousStation.NextStationId = nextStation == null ? -1 : nextStation.Id;
+                                this.MainRepo.UpdateStation(previousStation);
+                            }
+                            if (nextStation != null)
+                            {
+                                if (previousStation == null)
+                                {
+                                    nextStation.PreviousStationId = -1;
+                                    nextStation.DistanceToPreviousStation = 0;
+                                }
+                                else
+                                {
+                                    nextStation.PreviousStationId = previousStation.Id;
+                                    nextStation.DistanceToPreviousStation = nextStation.DistanceToPreviousStation + stationToDelete.DistanceToPreviousStation;
+                                }
+                                this.MainRepo.UpdateStation(nextStation);
+                            }
+                            this.MainRepo.DeleteStation(stationToDelete);
+                            this.PopulateStationListView(trainLine);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void TrainLineListView_DoubleClick(object sender, EventArgs e)
+        {
+            this.EditTrainLine();
+        }
+
+        private void StationListView_DoubleClick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void EditStation()
+        {
+
+        }
+
+        private void EditTrainLine()
+        {
+            if (this.TrainLineListView.SelectedItems.Count != 0)
+            {
+                var trainLine = this.TrainLines.Where(x => x.TrainLineName == this.TrainLineListView.SelectedItems[0].SubItems[0].Text).FirstOrDefault();
+                if (trainLine != null)
+                {
+                    new EditTrainLineForm(trainLine, this.TrainLines, this.MainRepo).ShowDialog();
+                    this.PopulateTrainLineListView();
+                }
             }
         }
     }

@@ -45,9 +45,6 @@
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.StationListView = new System.Windows.Forms.ListView();
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.DeleteStationButton = new System.Windows.Forms.Button();
             this.EditStationButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
@@ -56,6 +53,9 @@
             this.StationNameTextBox = new System.Windows.Forms.TextBox();
             this.AddStationButton = new System.Windows.Forms.Button();
             this.MyUniqueTextBox = new MyCustomTextBox.MyBox();
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -215,6 +215,7 @@
             this.TrainLineListView.UseCompatibleStateImageBehavior = false;
             this.TrainLineListView.View = System.Windows.Forms.View.Details;
             this.TrainLineListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.TrainLineListView_ItemSelectionChanged);
+            this.TrainLineListView.DoubleClick += new System.EventHandler(this.TrainLineListView_DoubleClick);
             // 
             // columnHeader1
             // 
@@ -272,7 +273,7 @@
             // 
             this.tableLayoutPanel6.ColumnCount = 1;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Controls.Add(this.StationListView, 2, 0);
+            this.tableLayoutPanel6.Controls.Add(this.StationListView, 3, 0);
             this.tableLayoutPanel6.Controls.Add(this.DeleteStationButton, 0, 1);
             this.tableLayoutPanel6.Controls.Add(this.EditStationButton, 0, 2);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -288,35 +289,20 @@
             // StationListView
             // 
             this.StationListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader5,
-            this.columnHeader3,
-            this.columnHeader4});
+            this.columnHeader6,
+            this.columnHeader7,
+            this.columnHeader8});
             this.StationListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StationListView.Enabled = false;
+            this.StationListView.FullRowSelect = true;
             this.StationListView.Location = new System.Drawing.Point(3, 3);
+            this.StationListView.MultiSelect = false;
             this.StationListView.Name = "StationListView";
             this.StationListView.Size = new System.Drawing.Size(314, 619);
             this.StationListView.TabIndex = 0;
             this.StationListView.UseCompatibleStateImageBehavior = false;
             this.StationListView.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.DisplayIndex = 2;
-            this.columnHeader5.Text = "Station Nr.";
-            this.columnHeader5.Width = 62;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.DisplayIndex = 0;
-            this.columnHeader3.Text = "Station Name";
-            this.columnHeader3.Width = 76;
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.DisplayIndex = 1;
-            this.columnHeader4.Text = "Distance To Previous Station";
-            this.columnHeader4.Width = 150;
+            this.StationListView.DoubleClick += new System.EventHandler(this.StationListView_DoubleClick);
             // 
             // DeleteStationButton
             // 
@@ -330,6 +316,7 @@
             this.DeleteStationButton.TabIndex = 1;
             this.DeleteStationButton.Text = "Deleted Selected Station";
             this.DeleteStationButton.UseVisualStyleBackColor = true;
+            this.DeleteStationButton.Click += new System.EventHandler(this.DeleteStationButton_Click);
             // 
             // EditStationButton
             // 
@@ -428,6 +415,21 @@
             this.MyUniqueTextBox.Size = new System.Drawing.Size(319, 20);
             this.MyUniqueTextBox.TabIndex = 0;
             // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "Station Nr.";
+            this.columnHeader6.Width = 62;
+            // 
+            // columnHeader7
+            // 
+            this.columnHeader7.Text = "Station Name";
+            this.columnHeader7.Width = 76;
+            // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "Distance to Previous Station";
+            this.columnHeader8.Width = 146;
+            // 
             // ManagementForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -469,8 +471,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.ListView StationListView;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.Button DeleteStationButton;
         private System.Windows.Forms.Button EditStationButton;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
@@ -479,6 +479,8 @@
         private System.Windows.Forms.TextBox StationNameTextBox;
         private System.Windows.Forms.Button AddStationButton;
         private MyCustomTextBox.MyBox MyUniqueTextBox;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.ColumnHeader columnHeader7;
+        private System.Windows.Forms.ColumnHeader columnHeader8;
     }
 }
