@@ -45,6 +45,7 @@
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.StationListView = new System.Windows.Forms.ListView();
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.DeleteStationButton = new System.Windows.Forms.Button();
@@ -55,7 +56,6 @@
             this.StationNameTextBox = new System.Windows.Forms.TextBox();
             this.AddStationButton = new System.Windows.Forms.Button();
             this.MyUniqueTextBox = new MyCustomTextBox.MyBox();
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -250,6 +250,7 @@
             this.EditTrainLineButton.TabIndex = 2;
             this.EditTrainLineButton.Text = "Edit Train Line";
             this.EditTrainLineButton.UseVisualStyleBackColor = true;
+            this.EditTrainLineButton.Click += new System.EventHandler(this.EditTrainLineButton_Click);
             // 
             // tableLayoutPanel5
             // 
@@ -298,6 +299,12 @@
             this.StationListView.TabIndex = 0;
             this.StationListView.UseCompatibleStateImageBehavior = false;
             this.StationListView.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.DisplayIndex = 2;
+            this.columnHeader5.Text = "Station Nr.";
+            this.columnHeader5.Width = 62;
             // 
             // columnHeader3
             // 
@@ -408,6 +415,7 @@
             this.AddStationButton.TabIndex = 4;
             this.AddStationButton.Text = "Add Station";
             this.AddStationButton.UseVisualStyleBackColor = true;
+            this.AddStationButton.Click += new System.EventHandler(this.AddStationButton_Click);
             // 
             // MyUniqueTextBox
             // 
@@ -419,12 +427,6 @@
             this.MyUniqueTextBox.Name = "MyUniqueTextBox";
             this.MyUniqueTextBox.Size = new System.Drawing.Size(319, 20);
             this.MyUniqueTextBox.TabIndex = 0;
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.DisplayIndex = 2;
-            this.columnHeader5.Text = "Station Nr.";
-            this.columnHeader5.Width = 62;
             // 
             // ManagementForm
             // 
