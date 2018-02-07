@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\DelayModel.cs" />
     <Compile Include="Entities\Station.cs" />
     <Compile Include="Entities\TrainLine.cs" />
     <Compile Include="Entities\UserModel.cs" />

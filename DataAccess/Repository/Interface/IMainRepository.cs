@@ -14,5 +14,9 @@
         IEnumerable<Station> ReadStations();
         void DeleteTrainLine(TrainLine trainLine);
         void DeleteStation(Station station);
+        long InsertDelay(DelayModel delay);
+        void UpdateDelay(DelayModel delay);
+        IEnumerable<DelayModel> ReadDelay();
+        void DeleteDelay(DelayModel delay);
     }
 }

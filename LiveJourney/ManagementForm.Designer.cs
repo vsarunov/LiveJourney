@@ -34,12 +34,18 @@
             this.TrainLineNameLabel = new System.Windows.Forms.Label();
             this.TrainLineColourLabel = new System.Windows.Forms.Label();
             this.TrainLineNameTextBox = new System.Windows.Forms.TextBox();
-            this.AddTrainLineButton = new System.Windows.Forms.Button();
             this.TrainLineColourComboBox = new System.Windows.Forms.ComboBox();
+            this.AddTrainLineButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.TravelSpeedTextBox = new MyCustomTextBox.MyBox();
+            this.DepartureTimeTextBox = new MyCustomTextBox.MyBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.TrainLineListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.DeleteTrainLineButton = new System.Windows.Forms.Button();
             this.EditTrainLineButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
@@ -56,13 +62,7 @@
             this.StationNameTextBox = new System.Windows.Forms.TextBox();
             this.AddStationButton = new System.Windows.Forms.Button();
             this.MyUniqueTextBox = new MyCustomTextBox.MyBox();
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.TravelSpeedTextBox = new MyCustomTextBox.MyBox();
-            this.DepartureTimeTextBox = new MyCustomTextBox.MyBox();
+            this.AddDelayButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -84,7 +84,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1304, 795);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1315, 795);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -99,8 +99,8 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 725F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(642, 789);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 789F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(647, 789);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // tableLayoutPanel3
@@ -130,7 +130,7 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.747127F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.108557F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 59.13155F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(160, 783);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(162, 783);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // TrainLineNameLabel
@@ -142,7 +142,7 @@
             this.TrainLineNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this.TrainLineNameLabel.Location = new System.Drawing.Point(3, 0);
             this.TrainLineNameLabel.Name = "TrainLineNameLabel";
-            this.TrainLineNameLabel.Size = new System.Drawing.Size(154, 27);
+            this.TrainLineNameLabel.Size = new System.Drawing.Size(156, 27);
             this.TrainLineNameLabel.TabIndex = 0;
             this.TrainLineNameLabel.Text = "Train Line Name:";
             // 
@@ -155,7 +155,7 @@
             this.TrainLineColourLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this.TrainLineColourLabel.Location = new System.Drawing.Point(3, 65);
             this.TrainLineColourLabel.Name = "TrainLineColourLabel";
-            this.TrainLineColourLabel.Size = new System.Drawing.Size(154, 26);
+            this.TrainLineColourLabel.Size = new System.Drawing.Size(156, 26);
             this.TrainLineColourLabel.TabIndex = 1;
             this.TrainLineColourLabel.Text = "Train Line Colour";
             // 
@@ -166,21 +166,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TrainLineNameTextBox.Location = new System.Drawing.Point(3, 30);
             this.TrainLineNameTextBox.Name = "TrainLineNameTextBox";
-            this.TrainLineNameTextBox.Size = new System.Drawing.Size(154, 20);
+            this.TrainLineNameTextBox.Size = new System.Drawing.Size(156, 20);
             this.TrainLineNameTextBox.TabIndex = 2;
-            // 
-            // AddTrainLineButton
-            // 
-            this.AddTrainLineButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.AddTrainLineButton.Location = new System.Drawing.Point(3, 283);
-            this.AddTrainLineButton.Name = "AddTrainLineButton";
-            this.AddTrainLineButton.Size = new System.Drawing.Size(154, 33);
-            this.AddTrainLineButton.TabIndex = 3;
-            this.AddTrainLineButton.Text = "Add Train Line";
-            this.AddTrainLineButton.UseVisualStyleBackColor = true;
-            this.AddTrainLineButton.Click += new System.EventHandler(this.AddTrainLineButton_Click);
             // 
             // TrainLineColourComboBox
             // 
@@ -192,9 +179,68 @@
             this.TrainLineColourComboBox.FormattingEnabled = true;
             this.TrainLineColourComboBox.Location = new System.Drawing.Point(3, 94);
             this.TrainLineColourComboBox.Name = "TrainLineColourComboBox";
-            this.TrainLineColourComboBox.Size = new System.Drawing.Size(154, 21);
+            this.TrainLineColourComboBox.Size = new System.Drawing.Size(156, 21);
             this.TrainLineColourComboBox.TabIndex = 4;
             this.TrainLineColourComboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.TrainLineColourComboBox_DrawItem);
+            // 
+            // AddTrainLineButton
+            // 
+            this.AddTrainLineButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.AddTrainLineButton.Location = new System.Drawing.Point(3, 283);
+            this.AddTrainLineButton.Name = "AddTrainLineButton";
+            this.AddTrainLineButton.Size = new System.Drawing.Size(156, 33);
+            this.AddTrainLineButton.TabIndex = 3;
+            this.AddTrainLineButton.Text = "Add Train Line";
+            this.AddTrainLineButton.UseVisualStyleBackColor = true;
+            this.AddTrainLineButton.Click += new System.EventHandler(this.AddTrainLineButton_Click);
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+            this.label1.Location = new System.Drawing.Point(3, 122);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(156, 33);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Train Travel Speed (km):";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+            this.label2.Location = new System.Drawing.Point(3, 196);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(156, 40);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Train departs every (min):";
+            // 
+            // TravelSpeedTextBox
+            // 
+            this.TravelSpeedTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TravelSpeedTextBox.Location = new System.Drawing.Point(3, 158);
+            this.TravelSpeedTextBox.Name = "TravelSpeedTextBox";
+            this.TravelSpeedTextBox.Size = new System.Drawing.Size(156, 20);
+            this.TravelSpeedTextBox.TabIndex = 0;
+            // 
+            // DepartureTimeTextBox
+            // 
+            this.DepartureTimeTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DepartureTimeTextBox.Location = new System.Drawing.Point(3, 239);
+            this.DepartureTimeTextBox.Name = "DepartureTimeTextBox";
+            this.DepartureTimeTextBox.Size = new System.Drawing.Size(156, 20);
+            this.DepartureTimeTextBox.TabIndex = 0;
             // 
             // tableLayoutPanel4
             // 
@@ -203,16 +249,16 @@
             this.tableLayoutPanel4.Controls.Add(this.TrainLineListView, 2, 0);
             this.tableLayoutPanel4.Controls.Add(this.DeleteTrainLineButton, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.EditTrainLineButton, 0, 2);
+            this.tableLayoutPanel4.Controls.Add(this.AddDelayButton, 0, 3);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(169, 3);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(171, 3);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 3;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 92.43086F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.569141F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(470, 783);
+            this.tableLayoutPanel4.RowCount = 4;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 79.94891F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.641124F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.768838F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.51341F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(473, 783);
             this.tableLayoutPanel4.TabIndex = 1;
             // 
             // TrainLineListView
@@ -227,7 +273,7 @@
             this.TrainLineListView.Location = new System.Drawing.Point(3, 3);
             this.TrainLineListView.MultiSelect = false;
             this.TrainLineListView.Name = "TrainLineListView";
-            this.TrainLineListView.Size = new System.Drawing.Size(464, 675);
+            this.TrainLineListView.Size = new System.Drawing.Size(467, 620);
             this.TrainLineListView.TabIndex = 0;
             this.TrainLineListView.UseCompatibleStateImageBehavior = false;
             this.TrainLineListView.View = System.Windows.Forms.View.Details;
@@ -244,14 +290,24 @@
             this.columnHeader2.Text = "Train Line Colour";
             this.columnHeader2.Width = 92;
             // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Train line travel speed (km)";
+            this.columnHeader4.Width = 139;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Train Departure Every (min)";
+            this.columnHeader5.Width = 141;
+            // 
             // DeleteTrainLineButton
             // 
             this.DeleteTrainLineButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DeleteTrainLineButton.Location = new System.Drawing.Point(3, 684);
+            this.DeleteTrainLineButton.Location = new System.Drawing.Point(3, 629);
             this.DeleteTrainLineButton.Name = "DeleteTrainLineButton";
-            this.DeleteTrainLineButton.Size = new System.Drawing.Size(464, 49);
+            this.DeleteTrainLineButton.Size = new System.Drawing.Size(467, 46);
             this.DeleteTrainLineButton.TabIndex = 1;
             this.DeleteTrainLineButton.Text = "Delete Train Line";
             this.DeleteTrainLineButton.UseVisualStyleBackColor = true;
@@ -262,9 +318,9 @@
             this.EditTrainLineButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.EditTrainLineButton.Location = new System.Drawing.Point(3, 739);
+            this.EditTrainLineButton.Location = new System.Drawing.Point(3, 681);
             this.EditTrainLineButton.Name = "EditTrainLineButton";
-            this.EditTrainLineButton.Size = new System.Drawing.Size(464, 41);
+            this.EditTrainLineButton.Size = new System.Drawing.Size(467, 47);
             this.EditTrainLineButton.TabIndex = 2;
             this.EditTrainLineButton.Text = "Edit Train Line";
             this.EditTrainLineButton.UseVisualStyleBackColor = true;
@@ -273,17 +329,17 @@
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 2;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.5122F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.4878F));
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel6, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel7, 0, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(651, 3);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(656, 3);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 725F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(650, 789);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(656, 789);
             this.tableLayoutPanel5.TabIndex = 1;
             // 
             // tableLayoutPanel6
@@ -294,13 +350,13 @@
             this.tableLayoutPanel6.Controls.Add(this.DeleteStationButton, 0, 1);
             this.tableLayoutPanel6.Controls.Add(this.EditStationButton, 0, 2);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(198, 3);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(295, 3);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 3;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 86.92628F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.258693F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.675939F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(449, 783);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(358, 783);
             this.tableLayoutPanel6.TabIndex = 0;
             // 
             // StationListView
@@ -308,15 +364,14 @@
             this.StationListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader6,
             this.columnHeader7,
-            this.columnHeader8,
-            this.columnHeader3});
+            this.columnHeader8});
             this.StationListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StationListView.Enabled = false;
             this.StationListView.FullRowSelect = true;
             this.StationListView.Location = new System.Drawing.Point(3, 3);
             this.StationListView.MultiSelect = false;
             this.StationListView.Name = "StationListView";
-            this.StationListView.Size = new System.Drawing.Size(443, 675);
+            this.StationListView.Size = new System.Drawing.Size(352, 675);
             this.StationListView.TabIndex = 0;
             this.StationListView.UseCompatibleStateImageBehavior = false;
             this.StationListView.View = System.Windows.Forms.View.Details;
@@ -345,7 +400,7 @@
             this.DeleteStationButton.Enabled = false;
             this.DeleteStationButton.Location = new System.Drawing.Point(3, 684);
             this.DeleteStationButton.Name = "DeleteStationButton";
-            this.DeleteStationButton.Size = new System.Drawing.Size(443, 43);
+            this.DeleteStationButton.Size = new System.Drawing.Size(352, 43);
             this.DeleteStationButton.TabIndex = 1;
             this.DeleteStationButton.Text = "Deleted Selected Station";
             this.DeleteStationButton.UseVisualStyleBackColor = true;
@@ -359,7 +414,7 @@
             this.EditStationButton.Enabled = false;
             this.EditStationButton.Location = new System.Drawing.Point(3, 733);
             this.EditStationButton.Name = "EditStationButton";
-            this.EditStationButton.Size = new System.Drawing.Size(443, 47);
+            this.EditStationButton.Size = new System.Drawing.Size(352, 47);
             this.EditStationButton.TabIndex = 2;
             this.EditStationButton.Text = "Edit Station";
             this.EditStationButton.UseVisualStyleBackColor = true;
@@ -384,7 +439,7 @@
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.006954F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.4242F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 79.97218F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(189, 783);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(286, 783);
             this.tableLayoutPanel7.TabIndex = 1;
             // 
             // StationNameLabel
@@ -396,7 +451,7 @@
             this.StationNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this.StationNameLabel.Location = new System.Drawing.Point(3, 0);
             this.StationNameLabel.Name = "StationNameLabel";
-            this.StationNameLabel.Size = new System.Drawing.Size(183, 19);
+            this.StationNameLabel.Size = new System.Drawing.Size(280, 19);
             this.StationNameLabel.TabIndex = 1;
             this.StationNameLabel.Text = "Station Name:";
             // 
@@ -409,7 +464,7 @@
             this.DisntanceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this.DisntanceLabel.Location = new System.Drawing.Point(3, 47);
             this.DisntanceLabel.Name = "DisntanceLabel";
-            this.DisntanceLabel.Size = new System.Drawing.Size(183, 30);
+            this.DisntanceLabel.Size = new System.Drawing.Size(280, 30);
             this.DisntanceLabel.TabIndex = 2;
             this.DisntanceLabel.Text = "Distance To Previous Stations (km):";
             // 
@@ -421,7 +476,7 @@
             this.StationNameTextBox.Enabled = false;
             this.StationNameTextBox.Location = new System.Drawing.Point(3, 22);
             this.StationNameTextBox.Name = "StationNameTextBox";
-            this.StationNameTextBox.Size = new System.Drawing.Size(183, 20);
+            this.StationNameTextBox.Size = new System.Drawing.Size(280, 20);
             this.StationNameTextBox.TabIndex = 3;
             // 
             // AddStationButton
@@ -432,7 +487,7 @@
             this.AddStationButton.Enabled = false;
             this.AddStationButton.Location = new System.Drawing.Point(3, 119);
             this.AddStationButton.Name = "AddStationButton";
-            this.AddStationButton.Size = new System.Drawing.Size(183, 36);
+            this.AddStationButton.Size = new System.Drawing.Size(280, 36);
             this.AddStationButton.TabIndex = 4;
             this.AddStationButton.Text = "Add Station";
             this.AddStationButton.UseVisualStyleBackColor = true;
@@ -446,75 +501,26 @@
             this.MyUniqueTextBox.Enabled = false;
             this.MyUniqueTextBox.Location = new System.Drawing.Point(3, 80);
             this.MyUniqueTextBox.Name = "MyUniqueTextBox";
-            this.MyUniqueTextBox.Size = new System.Drawing.Size(183, 20);
+            this.MyUniqueTextBox.Size = new System.Drawing.Size(280, 20);
             this.MyUniqueTextBox.TabIndex = 0;
             // 
-            // columnHeader3
+            // AddDelayButton
             // 
-            this.columnHeader3.Text = "Delay at the station (min)";
-            this.columnHeader3.Width = 131;
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Train line travel speed (km)";
-            this.columnHeader4.Width = 139;
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "Train Departure Every (min)";
-            this.columnHeader5.Width = 141;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.AddDelayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this.label1.Location = new System.Drawing.Point(3, 122);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(154, 33);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Train Travel Speed (km):";
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this.label2.Location = new System.Drawing.Point(3, 196);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(154, 40);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Train departs every (min):";
-            // 
-            // TravelSpeedTextBox
-            // 
-            this.TravelSpeedTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TravelSpeedTextBox.Location = new System.Drawing.Point(3, 158);
-            this.TravelSpeedTextBox.Name = "TravelSpeedTextBox";
-            this.TravelSpeedTextBox.Size = new System.Drawing.Size(154, 20);
-            this.TravelSpeedTextBox.TabIndex = 0;
-            // 
-            // DepartureTimeTextBox
-            // 
-            this.DepartureTimeTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.DepartureTimeTextBox.Location = new System.Drawing.Point(3, 239);
-            this.DepartureTimeTextBox.Name = "DepartureTimeTextBox";
-            this.DepartureTimeTextBox.Size = new System.Drawing.Size(154, 20);
-            this.DepartureTimeTextBox.TabIndex = 0;
+            this.AddDelayButton.Location = new System.Drawing.Point(3, 734);
+            this.AddDelayButton.Name = "AddDelayButton";
+            this.AddDelayButton.Size = new System.Drawing.Size(467, 46);
+            this.AddDelayButton.TabIndex = 3;
+            this.AddDelayButton.Text = "Add delay to the train line";
+            this.AddDelayButton.UseVisualStyleBackColor = true;
             // 
             // ManagementForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1304, 795);
+            this.ClientSize = new System.Drawing.Size(1315, 795);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "ManagementForm";
             this.Text = "ManagementForm";
@@ -562,12 +568,12 @@
         private System.Windows.Forms.ColumnHeader columnHeader6;
         private System.Windows.Forms.ColumnHeader columnHeader7;
         private System.Windows.Forms.ColumnHeader columnHeader8;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private MyCustomTextBox.MyBox TravelSpeedTextBox;
         private MyCustomTextBox.MyBox DepartureTimeTextBox;
+        private System.Windows.Forms.Button AddDelayButton;
     }
 }

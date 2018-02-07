@@ -44,6 +44,8 @@
                 this.RemoveColourFromComboBox(this.TrainLineColourComboBox.Text);
                 this.TrainLineNameTextBox.Text = string.Empty;
                 this.TrainLineColourComboBox.Text = string.Empty;
+                this.TravelSpeedTextBox.Text = string.Empty;
+                this.DepartureTimeTextBox.Text = string.Empty;
                 var trainLineId = this.MainRepo.InsertTrainline(newTrainLine);
                 newTrainLine.Id = trainLineId;
                 TrainLines.Add(newTrainLine);
@@ -235,7 +237,7 @@
             int stationCounter = 1;
             foreach (var item in trainLine.Stations)
             {
-                this.StationListView.Items.Add(new ListViewItem(new[] { stationCounter.ToString(), item.StationName, item.DistanceToPreviousStation.ToString(), item.Delay.ToString() }));
+                this.StationListView.Items.Add(new ListViewItem(new[] { stationCounter.ToString(), item.StationName, item.DistanceToPreviousStation.ToString() }));
                 stationCounter++;
             }
         }

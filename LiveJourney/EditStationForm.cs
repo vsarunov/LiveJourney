@@ -26,7 +26,6 @@
             this.StationToEdit = stationToEdit;
             this.StationNameTextBox.Text = this.StationToEdit.StationName;
             this.MyUniqueTextBox.Text = this.StationToEdit.DistanceToPreviousStation.ToString();
-            this.DelayTextBox.Text = this.StationToEdit.Delay.ToString();
         }
 
         private void SubmitChangesButton_Click(object sender, EventArgs e)
@@ -34,7 +33,6 @@
             if (!this.CheckIfValidInput(this.StationNameTextBox.Text) && !Stations.Where(x => x.Id != this.StationToEdit.Id).Any(x => x.StationName == this.StationNameTextBox.Text))
             {
                 var distanceValue = double.Parse(this.MyUniqueTextBox.Text);
-                var delay = !this.CheckIfValidInput(this.DelayTextBox.Text) ? long.Parse(this.DelayTextBox.Text) : 0;
                 if (Stations.Any(x => x.NextStationId == StationToEdit.Id) && distanceValue == 0)
                 {
                     MessageBox.Show("Distance cannot be 0");
@@ -43,7 +41,6 @@
                 {
                     StationToEdit.StationName = this.StationNameTextBox.Text;
                     StationToEdit.DistanceToPreviousStation = distanceValue;
-                    StationToEdit.Delay = delay;
                     this.MainRepo.UpdateStation(StationToEdit);
                     this.Close();
                 }

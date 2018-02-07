@@ -23,6 +23,7 @@ namespace DataAccess.Repository
             this.InsertAdminUser();
             this.CreateTrainLineTable();
             this.CreateStationTable();
+            this.CreateDelayTable();
         }
 
         private static string CREATE_USER_TABLE =
@@ -53,8 +54,21 @@ namespace DataAccess.Repository
                 NextStationId INTEGER,
                 PreviousStationId INTEGER,
                 DistanceToPreviousStation INTEGER,
-                Delay INTEGER,
                 FOREIGN KEY(TrainLineId) REFERENCES TrainLines(Id)); 
+            ";
+
+        private static string CREATE_DELAY_TABLE =
+            @"
+               CREATE TABLE IF NOT EXISTS [DelayTable]
+                (Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                DelayTime INTEGER NOT NULL,
+                TrainLineId INTEGER NOT NULL,
+                StartDelayStationId INTEGER NOT NULL,
+                EndDelayStationId INTEGER NOT NULL,
+                TimeStamp INTEGER NOT NULL,
+                FOREIGN KEY(TrainLineId) REFERENCES TrainLines(Id),
+                FOREIGN KEY(StartDelayStationId) REFERENCES Stations(Id),
+                FOREIGN KEY(EndDelayStationId) REFERENCES Stations(Id));
             ";
 
         private static string INSERT_TRAIN_LINE =
@@ -64,7 +78,12 @@ namespace DataAccess.Repository
 
         private static string INSERT_STATION =
             @"
-              INSERT INTO Stations (StationName,TrainLineId,NextStationId,PreviousStationId,DistanceToPreviousStation,Delay) VALUES (@StationName,@TrainLineId,@NextStationId,@PreviousStationId,@DistanceToPreviousStation,@Delay);
+              INSERT INTO Stations (StationName,TrainLineId,NextStationId,PreviousStationId,DistanceToPreviousStation) VALUES (@StationName,@TrainLineId,@NextStationId,@PreviousStationId,@DistanceToPreviousStation);
+            ";
+
+        private static string INSERT_DELAY =
+            @"
+             INSERT INTO DelayTable (DelayTime,TrainLineId,StartDelayStationId,EndDelayStationId,TimeStamp) VALUES (@DelayTime,@TrainLineId,@StartDelayStationId,@EndDelayStationId,@TimeStamp);
             ";
 
         private static string UPDATE_TRAIN_LINE =
@@ -74,7 +93,12 @@ namespace DataAccess.Repository
 
         private static string UPDATE_STATION =
             @"
-               UPDATE Stations SET StationName = @StationName, TrainLineId = @TrainLineId, NextStationId = @NextStationId, PreviousStationId = @PreviousStationId, DistanceToPreviousStation = @DistanceToPreviousStation, Delay = @Delay WHERE Id = @Id;
+               UPDATE Stations SET StationName = @StationName, TrainLineId = @TrainLineId, NextStationId = @NextStationId, PreviousStationId = @PreviousStationId, DistanceToPreviousStation = @DistanceToPreviousStation WHERE Id = @Id;
+            ";
+
+        private static string UPDATE_DELAY =
+            @"
+               UPDATE DelayTable SET DelayTime = @DelayTime, TrainLineId = @TrainLineId, StartDelayStationId = @StartDelayStationId, EndDelayStationId = @EndDelayStationId, TimeStamp = @TimeStamp WHERE Id = @Id;
             ";
 
         private static string READ_TRAIN_LINES =
@@ -87,6 +111,11 @@ namespace DataAccess.Repository
                 SELECT * FROM Stations;
             ";
 
+        private static string READ_DELAYS =
+            @"
+                SELECT * FROM DelayTable;
+            ";
+
         private static string DELETE_TRAIN_LINE =
             @"
                DELETE FROM TrainLines WHERE Id = @Id;
@@ -94,7 +123,12 @@ namespace DataAccess.Repository
 
         private static string DELETE_STATION =
             @"
-               DELETE FROM Stations WHERE ID = @Id
+               DELETE FROM Stations WHERE Id = @Id
+            ";
+
+        private static string DELETE_DELAY =
+            @"
+               DELETE FROM DelayTable WHERE Id = @Id
             ";
 
         private static string INSERT_ADMIN_USER = @"INSERT INTO UserTable (Username,Password,AdminType) VALUES(@Username,@Password,@AdminType);";
@@ -147,6 +181,25 @@ namespace DataAccess.Repository
                 {
                     sqliteConnection.Open();
                     using (SQLiteCommand mCmd = new SQLiteCommand(CREATE_STATION_TABLE, sqliteConnection))
+                    {
+                        mCmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        private void CreateDelayTable()
+        {
+            try
+            {
+                using (var sqliteConnection = new SQLiteConnection(this.DatabasePath))
+                {
+                    sqliteConnection.Open();
+                    using (SQLiteCommand mCmd = new SQLiteCommand(CREATE_DELAY_TABLE, sqliteConnection))
                     {
                         mCmd.ExecuteNonQuery();
                     }
@@ -246,7 +299,35 @@ namespace DataAccess.Repository
                         mCmd.Parameters.AddWithValue("@NextStationId", station.NextStationId);
                         mCmd.Parameters.AddWithValue("@PreviousStationId", station.PreviousStationId);
                         mCmd.Parameters.AddWithValue("@DistanceToPreviousStation", station.DistanceToPreviousStation);
-                        mCmd.Parameters.AddWithValue("@Delay", station.Delay);
+                        mCmd.ExecuteNonQuery();
+                        lastInsertedId = sqliteConnection.LastInsertRowId;
+                    }
+                }
+                return lastInsertedId;
+            }
+            catch (Exception e)
+            {
+                return lastInsertedId;
+            }
+        }
+
+        public long InsertDelay(DelayModel delay)
+        {
+            long lastInsertedId = -1;
+            try
+            {
+
+                //@DelayTime,@TrainLineId,@StartDelayStationId,@EndDelayStationId,@TimeStamp
+                using (var sqliteConnection = new SQLiteConnection(this.DatabasePath))
+                {
+                    sqliteConnection.Open();
+                    using (SQLiteCommand mCmd = new SQLiteCommand(INSERT_DELAY, sqliteConnection))
+                    {
+                        mCmd.Parameters.AddWithValue("@DelayTime", delay.DelayTime);
+                        mCmd.Parameters.AddWithValue("@TrainLineId", delay.TrainLineId);
+                        mCmd.Parameters.AddWithValue("@StartDelayStationId", delay.StartDelayStationId);
+                        mCmd.Parameters.AddWithValue("@EndDelayStationId", delay.EndDelayStationId);
+                        mCmd.Parameters.AddWithValue("@TimeStamp", delay.TimeStamp);
                         mCmd.ExecuteNonQuery();
                         lastInsertedId = sqliteConnection.LastInsertRowId;
                     }
@@ -297,8 +378,32 @@ namespace DataAccess.Repository
                         mCmd.Parameters.AddWithValue("@NextStationId", station.NextStationId);
                         mCmd.Parameters.AddWithValue("@PreviousStationId", station.PreviousStationId);
                         mCmd.Parameters.AddWithValue("@DistanceToPreviousStation", station.DistanceToPreviousStation);
-                        mCmd.Parameters.AddWithValue("@Delay", station.Delay);
                         mCmd.Parameters.AddWithValue("@Id", station.Id);
+                        mCmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public void UpdateDelay(DelayModel delay)
+        {
+            try
+            {
+                using (var sqliteConnection = new SQLiteConnection(this.DatabasePath))
+                {
+                    sqliteConnection.Open();
+                    using (SQLiteCommand mCmd = new SQLiteCommand(UPDATE_DELAY, sqliteConnection))
+                    {
+                        mCmd.Parameters.AddWithValue("@DelayTime", delay.DelayTime);
+                        mCmd.Parameters.AddWithValue("@TrainLineId", delay.TrainLineId);
+                        mCmd.Parameters.AddWithValue("@StartDelayStationId", delay.StartDelayStationId);
+                        mCmd.Parameters.AddWithValue("@EndDelayStationId", delay.EndDelayStationId);
+                        mCmd.Parameters.AddWithValue("@TimeStamp", delay.TimeStamp);
+                        mCmd.Parameters.AddWithValue("@Id", delay.Id);
                         mCmd.ExecuteNonQuery();
                     }
                 }
@@ -341,6 +446,22 @@ namespace DataAccess.Repository
             }
         }
 
+        public IEnumerable<DelayModel> ReadDelay()
+        {
+            try
+            {
+                using (var sqliteConnection = new SQLiteConnection(this.DatabasePath))
+                {
+                    sqliteConnection.Open();
+                    return sqliteConnection.Query<DelayModel>(READ_DELAYS);
+                }
+            }
+            catch (Exception e)
+            {
+                return Enumerable.Empty<DelayModel>();
+            }
+        }
+
         public void DeleteTrainLine(TrainLine trainLine)
         {
             try
@@ -371,6 +492,26 @@ namespace DataAccess.Repository
                     using (SQLiteCommand mCmd = new SQLiteCommand(DELETE_STATION, sqliteConnection))
                     {
                         mCmd.Parameters.AddWithValue("@Id", station.Id);
+                        mCmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public void DeleteDelay(DelayModel delay)
+        {
+            try
+            {
+                using (var sqliteConnection = new SQLiteConnection(this.DatabasePath))
+                {
+                    sqliteConnection.Open();
+                    using (SQLiteCommand mCmd = new SQLiteCommand(DELETE_DELAY, sqliteConnection))
+                    {
+                        mCmd.Parameters.AddWithValue("@Id", delay.Id);
                         mCmd.ExecuteNonQuery();
                     }
                 }
