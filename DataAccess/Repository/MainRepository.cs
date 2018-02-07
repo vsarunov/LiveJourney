@@ -51,6 +51,7 @@ namespace DataAccess.Repository
                 NextStationId INTEGER,
                 PreviousStationId INTEGER,
                 DistanceToPreviousStation INTEGER,
+                Delay INTEGER,
                 FOREIGN KEY(TrainLineId) REFERENCES TrainLines(Id)); 
             ";
 
@@ -61,7 +62,7 @@ namespace DataAccess.Repository
 
         private static string INSERT_STATION =
             @"
-              INSERT INTO Stations (StationName,TrainLineId,NextStationId,PreviousStationId,DistanceToPreviousStation) VALUES (@StationName,@TrainLineId,@NextStationId,@PreviousStationId,@DistanceToPreviousStation);
+              INSERT INTO Stations (StationName,TrainLineId,NextStationId,PreviousStationId,DistanceToPreviousStation,Delay) VALUES (@StationName,@TrainLineId,@NextStationId,@PreviousStationId,@DistanceToPreviousStation,@Delay);
             ";
 
         private static string UPDATE_TRAIN_LINE =
@@ -71,7 +72,7 @@ namespace DataAccess.Repository
 
         private static string UPDATE_STATION =
             @"
-               UPDATE Stations SET StationName = @StationName, TrainLineId = @TrainLineId, NextStationId = @NextStationId, PreviousStationId = @PreviousStationId, DistanceToPreviousStation = @DistanceToPreviousStation WHERE Id = @Id;
+               UPDATE Stations SET StationName = @StationName, TrainLineId = @TrainLineId, NextStationId = @NextStationId, PreviousStationId = @PreviousStationId, DistanceToPreviousStation = @DistanceToPreviousStation, Delay = @Delay WHERE Id = @Id;
             ";
 
         private static string READ_TRAIN_LINES =
@@ -241,6 +242,7 @@ namespace DataAccess.Repository
                         mCmd.Parameters.AddWithValue("@NextStationId", station.NextStationId);
                         mCmd.Parameters.AddWithValue("@PreviousStationId", station.PreviousStationId);
                         mCmd.Parameters.AddWithValue("@DistanceToPreviousStation", station.DistanceToPreviousStation);
+                        mCmd.Parameters.AddWithValue("@Delay", station.Delay);
                         mCmd.ExecuteNonQuery();
                         lastInsertedId = sqliteConnection.LastInsertRowId;
                     }
@@ -289,6 +291,7 @@ namespace DataAccess.Repository
                         mCmd.Parameters.AddWithValue("@NextStationId", station.NextStationId);
                         mCmd.Parameters.AddWithValue("@PreviousStationId", station.PreviousStationId);
                         mCmd.Parameters.AddWithValue("@DistanceToPreviousStation", station.DistanceToPreviousStation);
+                        mCmd.Parameters.AddWithValue("@Delay", station.Delay);
                         mCmd.Parameters.AddWithValue("@Id", station.Id);
                         mCmd.ExecuteNonQuery();
                     }

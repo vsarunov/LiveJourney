@@ -45,6 +45,9 @@
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.StationListView = new System.Windows.Forms.ListView();
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.DeleteStationButton = new System.Windows.Forms.Button();
             this.EditStationButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
@@ -53,9 +56,7 @@
             this.StationNameTextBox = new System.Windows.Forms.TextBox();
             this.AddStationButton = new System.Windows.Forms.Button();
             this.MyUniqueTextBox = new MyCustomTextBox.MyBox();
-            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -256,8 +257,8 @@
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 2;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.45732F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.54268F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 39.42161F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.57839F));
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel6, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel7, 0, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -277,13 +278,13 @@
             this.tableLayoutPanel6.Controls.Add(this.DeleteStationButton, 0, 1);
             this.tableLayoutPanel6.Controls.Add(this.EditStationButton, 0, 2);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(334, 3);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(261, 3);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 3;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 86.92628F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.258693F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.675939F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(320, 719);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(393, 719);
             this.tableLayoutPanel6.TabIndex = 0;
             // 
             // StationListView
@@ -291,18 +292,34 @@
             this.StationListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader6,
             this.columnHeader7,
-            this.columnHeader8});
+            this.columnHeader8,
+            this.columnHeader3});
             this.StationListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StationListView.Enabled = false;
             this.StationListView.FullRowSelect = true;
             this.StationListView.Location = new System.Drawing.Point(3, 3);
             this.StationListView.MultiSelect = false;
             this.StationListView.Name = "StationListView";
-            this.StationListView.Size = new System.Drawing.Size(314, 619);
+            this.StationListView.Size = new System.Drawing.Size(387, 619);
             this.StationListView.TabIndex = 0;
             this.StationListView.UseCompatibleStateImageBehavior = false;
             this.StationListView.View = System.Windows.Forms.View.Details;
             this.StationListView.DoubleClick += new System.EventHandler(this.StationListView_DoubleClick);
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "Station Nr.";
+            this.columnHeader6.Width = 62;
+            // 
+            // columnHeader7
+            // 
+            this.columnHeader7.Text = "Station Name";
+            this.columnHeader7.Width = 76;
+            // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "Distance to Previous Station";
+            this.columnHeader8.Width = 136;
             // 
             // DeleteStationButton
             // 
@@ -312,7 +329,7 @@
             this.DeleteStationButton.Enabled = false;
             this.DeleteStationButton.Location = new System.Drawing.Point(3, 628);
             this.DeleteStationButton.Name = "DeleteStationButton";
-            this.DeleteStationButton.Size = new System.Drawing.Size(314, 39);
+            this.DeleteStationButton.Size = new System.Drawing.Size(387, 39);
             this.DeleteStationButton.TabIndex = 1;
             this.DeleteStationButton.Text = "Deleted Selected Station";
             this.DeleteStationButton.UseVisualStyleBackColor = true;
@@ -326,10 +343,11 @@
             this.EditStationButton.Enabled = false;
             this.EditStationButton.Location = new System.Drawing.Point(3, 673);
             this.EditStationButton.Name = "EditStationButton";
-            this.EditStationButton.Size = new System.Drawing.Size(314, 43);
+            this.EditStationButton.Size = new System.Drawing.Size(387, 43);
             this.EditStationButton.TabIndex = 2;
             this.EditStationButton.Text = "Edit Station";
             this.EditStationButton.UseVisualStyleBackColor = true;
+            this.EditStationButton.Click += new System.EventHandler(this.EditStationButton_Click);
             // 
             // tableLayoutPanel7
             // 
@@ -350,7 +368,7 @@
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.006954F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.4242F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 79.97218F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(325, 719);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(252, 719);
             this.tableLayoutPanel7.TabIndex = 1;
             // 
             // StationNameLabel
@@ -362,7 +380,7 @@
             this.StationNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this.StationNameLabel.Location = new System.Drawing.Point(3, 0);
             this.StationNameLabel.Name = "StationNameLabel";
-            this.StationNameLabel.Size = new System.Drawing.Size(319, 17);
+            this.StationNameLabel.Size = new System.Drawing.Size(246, 17);
             this.StationNameLabel.TabIndex = 1;
             this.StationNameLabel.Text = "Station Name:";
             // 
@@ -375,7 +393,7 @@
             this.DisntanceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
             this.DisntanceLabel.Location = new System.Drawing.Point(3, 43);
             this.DisntanceLabel.Name = "DisntanceLabel";
-            this.DisntanceLabel.Size = new System.Drawing.Size(319, 27);
+            this.DisntanceLabel.Size = new System.Drawing.Size(246, 27);
             this.DisntanceLabel.TabIndex = 2;
             this.DisntanceLabel.Text = "Distance To Previous Stations (km):";
             // 
@@ -387,7 +405,7 @@
             this.StationNameTextBox.Enabled = false;
             this.StationNameTextBox.Location = new System.Drawing.Point(3, 20);
             this.StationNameTextBox.Name = "StationNameTextBox";
-            this.StationNameTextBox.Size = new System.Drawing.Size(319, 20);
+            this.StationNameTextBox.Size = new System.Drawing.Size(246, 20);
             this.StationNameTextBox.TabIndex = 3;
             // 
             // AddStationButton
@@ -398,7 +416,7 @@
             this.AddStationButton.Enabled = false;
             this.AddStationButton.Location = new System.Drawing.Point(3, 108);
             this.AddStationButton.Name = "AddStationButton";
-            this.AddStationButton.Size = new System.Drawing.Size(319, 32);
+            this.AddStationButton.Size = new System.Drawing.Size(246, 32);
             this.AddStationButton.TabIndex = 4;
             this.AddStationButton.Text = "Add Station";
             this.AddStationButton.UseVisualStyleBackColor = true;
@@ -412,23 +430,13 @@
             this.MyUniqueTextBox.Enabled = false;
             this.MyUniqueTextBox.Location = new System.Drawing.Point(3, 73);
             this.MyUniqueTextBox.Name = "MyUniqueTextBox";
-            this.MyUniqueTextBox.Size = new System.Drawing.Size(319, 20);
+            this.MyUniqueTextBox.Size = new System.Drawing.Size(246, 20);
             this.MyUniqueTextBox.TabIndex = 0;
             // 
-            // columnHeader6
+            // columnHeader3
             // 
-            this.columnHeader6.Text = "Station Nr.";
-            this.columnHeader6.Width = 62;
-            // 
-            // columnHeader7
-            // 
-            this.columnHeader7.Text = "Station Name";
-            this.columnHeader7.Width = 76;
-            // 
-            // columnHeader8
-            // 
-            this.columnHeader8.Text = "Distance to Previous Station";
-            this.columnHeader8.Width = 146;
+            this.columnHeader3.Text = "Delay at the station";
+            this.columnHeader3.Width = 103;
             // 
             // ManagementForm
             // 
@@ -482,5 +490,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader6;
         private System.Windows.Forms.ColumnHeader columnHeader7;
         private System.Windows.Forms.ColumnHeader columnHeader8;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
     }
 }

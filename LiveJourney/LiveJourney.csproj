@@ -63,6 +63,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EditStationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditStationForm.Designer.cs">
+      <DependentUpon>EditStationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditTrainLineForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,6 +89,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="EditStationForm.resx">
+      <DependentUpon>EditStationForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EditTrainLineForm.resx">
       <DependentUpon>EditTrainLineForm.cs</DependentUpon>
     </EmbeddedResource>
