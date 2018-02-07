@@ -31,13 +31,16 @@
 
         private void AddTrainLineButton_Click(object sender, EventArgs e)
         {
-            if (!this.CheckIfValidInput(this.TrainLineNameTextBox.Text) && !this.CheckIfValidInput(this.TrainLineColourComboBox.Text) && !TrainLines.Any(x => x.TrainLineName == this.TrainLineNameTextBox.Text))
+            if (!this.CheckIfValidInput(this.TrainLineNameTextBox.Text) && !this.CheckIfValidInput(this.TrainLineColourComboBox.Text)
+                && !TrainLines.Any(x => x.TrainLineName == this.TrainLineNameTextBox.Text)
+                && !this.CheckIfValidInput(this.TravelSpeedTextBox.Text)
+                && !this.CheckIfValidInput(this.DepartureTimeTextBox.Text))
             {
-                var listViewItem = new ListViewItem(new[] { this.TrainLineNameTextBox.Text, this.TrainLineColourComboBox.Text });
+                var listViewItem = new ListViewItem(new[] { this.TrainLineNameTextBox.Text, this.TrainLineColourComboBox.Text, this.TravelSpeedTextBox.Text, this.DepartureTimeTextBox.Text });
                 Color colour = Color.FromName(this.TrainLineColourComboBox.Text);
                 listViewItem.ForeColor = colour;
                 this.TrainLineListView.Items.Add(listViewItem);
-                var newTrainLine = new TrainLine() { TrainLineName = this.TrainLineNameTextBox.Text, TrainLineColour = this.TrainLineColourComboBox.Text };
+                var newTrainLine = new TrainLine() { TrainLineName = this.TrainLineNameTextBox.Text, TrainLineColour = this.TrainLineColourComboBox.Text, TrainTravelSpeed = long.Parse(this.TravelSpeedTextBox.Text), TrainDepartureDelay = long.Parse(this.DepartureTimeTextBox.Text) };
                 this.RemoveColourFromComboBox(this.TrainLineColourComboBox.Text);
                 this.TrainLineNameTextBox.Text = string.Empty;
                 this.TrainLineColourComboBox.Text = string.Empty;
@@ -67,7 +70,7 @@
             this.TrainLineListView.Items.Clear();
             foreach (var item in TrainLines)
             {
-                var listViewItem = new ListViewItem(new[] { item.TrainLineName, item.TrainLineColour });
+                var listViewItem = new ListViewItem(new[] { item.TrainLineName, item.TrainLineColour, item.TrainTravelSpeed.ToString(), item.TrainDepartureDelay.ToString() });
                 Color colour = Color.FromName(item.TrainLineColour);
                 listViewItem.ForeColor = colour;
                 this.TrainLineListView.Items.Add(listViewItem);
@@ -232,7 +235,7 @@
             int stationCounter = 1;
             foreach (var item in trainLine.Stations)
             {
-                this.StationListView.Items.Add(new ListViewItem(new[] { stationCounter.ToString(), item.StationName, item.DistanceToPreviousStation.ToString(),item.Delay.ToString() }));
+                this.StationListView.Items.Add(new ListViewItem(new[] { stationCounter.ToString(), item.StationName, item.DistanceToPreviousStation.ToString(), item.Delay.ToString() }));
                 stationCounter++;
             }
         }

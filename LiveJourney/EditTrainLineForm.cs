@@ -61,6 +61,8 @@ namespace LiveJourney
         private void SetTextBox()
         {
             this.TrainLineNameTextBox.Text = this.TrainLineToEdit.TrainLineName;
+            this.TrainTravelSpeedTextBox.Text = this.TrainLineToEdit.TrainTravelSpeed.ToString();
+            this.TrainDepartureTimeTextBox.Text = this.TrainLineToEdit.TrainDepartureDelay.ToString();
         }
 
         private void SetSelecedColour()
@@ -85,10 +87,14 @@ namespace LiveJourney
         private void SubmitEditingsButton_Click(object sender, EventArgs e)
         {
             if (!this.CheckIfValidInput(this.TrainLineNameTextBox.Text) && !this.CheckIfValidInput(this.TrainLineColourComboBox.Text)
-                && !this.TrainLines.Where(x => x.Id != this.TrainLineToEdit.Id).Any(x => x.TrainLineName == this.TrainLineNameTextBox.Text) && !this.TrainLines.Where(x => x.Id != this.TrainLineToEdit.Id).Any(x => x.TrainLineColour == this.TrainLineColourComboBox.Text))
+                && !this.TrainLines.Where(x => x.Id != this.TrainLineToEdit.Id).Any(x => x.TrainLineName == this.TrainLineNameTextBox.Text) && !this.TrainLines.Where(x => x.Id != this.TrainLineToEdit.Id).Any(x => x.TrainLineColour == this.TrainLineColourComboBox.Text)
+                && !this.CheckIfValidInput(this.TrainTravelSpeedTextBox.Text)
+                && !this.CheckIfValidInput(this.TrainDepartureTimeTextBox.Text))
             {
                 this.TrainLineToEdit.TrainLineName = this.TrainLineNameTextBox.Text;
                 this.TrainLineToEdit.TrainLineColour = this.TrainLineColourComboBox.Text;
+                this.TrainLineToEdit.TrainTravelSpeed = long.Parse(this.TrainTravelSpeedTextBox.Text);
+                this.TrainLineToEdit.TrainDepartureDelay = long.Parse(this.TrainDepartureTimeTextBox.Text);
                 this.MainRepo.UpdateTrainLine(this.TrainLineToEdit);
                 this.Close();
             }

@@ -39,7 +39,9 @@ namespace DataAccess.Repository
                CREATE TABLE IF NOT EXISTS [TrainLines]
                 (Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 TrainLineName TEXT NOT NULL,
-                TrainLineColour TEXT NOT NULL);  
+                TrainLineColour TEXT NOT NULL,
+                TrainTravelSpeed INTEGER NOT NULL,
+                TrainDepartureDelay INTEGER NOT NULL);  
             ";
 
         private static string CREATE_STATION_TABLE =
@@ -57,7 +59,7 @@ namespace DataAccess.Repository
 
         private static string INSERT_TRAIN_LINE =
             @"
-              INSERT INTO TrainLines (TrainLineName,TrainLineColour) VALUES (@TrainLineName,@TrainLineColour);
+              INSERT INTO TrainLines (TrainLineName,TrainLineColour,TrainTravelSpeed,TrainDepartureDelay) VALUES (@TrainLineName,@TrainLineColour,@TrainTravelSpeed,@TrainDepartureDelay);
             ";
 
         private static string INSERT_STATION =
@@ -67,7 +69,7 @@ namespace DataAccess.Repository
 
         private static string UPDATE_TRAIN_LINE =
             @"
-               UPDATE TrainLines SET TrainLineName = @TrainLineName, TrainLineColour = @TrainLineColour WHERE Id = @id;
+               UPDATE TrainLines SET TrainLineName = @TrainLineName, TrainLineColour = @TrainLineColour,TrainTravelSpeed = @TrainTravelSpeed,TrainDepartureDelay = @TrainDepartureDelay WHERE Id = @id;
             ";
 
         private static string UPDATE_STATION =
@@ -215,6 +217,8 @@ namespace DataAccess.Repository
                     {
                         mCmd.Parameters.AddWithValue("@TrainLineName", trainLine.TrainLineName);
                         mCmd.Parameters.AddWithValue("@TrainLineColour", trainLine.TrainLineColour);
+                        mCmd.Parameters.AddWithValue("@TrainTravelSpeed", trainLine.TrainTravelSpeed);
+                        mCmd.Parameters.AddWithValue("@TrainDepartureDelay", trainLine.TrainTravelSpeed);
                         mCmd.ExecuteNonQuery();
                         lastInsertedId = sqliteConnection.LastInsertRowId;
                     }
@@ -266,6 +270,8 @@ namespace DataAccess.Repository
                     {
                         mCmd.Parameters.AddWithValue("@TrainLineName", trainLine.TrainLineName);
                         mCmd.Parameters.AddWithValue("@TrainLineColour", trainLine.TrainLineColour);
+                        mCmd.Parameters.AddWithValue("@TrainTravelSpeed", trainLine.TrainLineColour);
+                        mCmd.Parameters.AddWithValue("@TrainDepartureDelay", trainLine.TrainLineColour);
                         mCmd.Parameters.AddWithValue("@Id", trainLine.Id);
                         mCmd.ExecuteNonQuery();
                     }

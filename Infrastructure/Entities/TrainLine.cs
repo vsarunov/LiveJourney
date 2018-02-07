@@ -8,5 +8,7 @@
         public string TrainLineName { get; set; }
         public string TrainLineColour { get; set; }
         public List<Station> Stations { get; set; } = new List<Station>();
+        public long TrainTravelSpeed { get; set; }
+        public long TrainDepartureDelay { get; set; }
     }
 }
