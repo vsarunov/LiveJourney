@@ -33,9 +33,13 @@
             if (!this.CheckIfValidInput(this.StationNameTextBox.Text) && !Stations.Where(x => x.Id != this.StationToEdit.Id).Any(x => x.StationName == this.StationNameTextBox.Text))
             {
                 var distanceValue = double.Parse(this.MyUniqueTextBox.Text);
-                if (Stations.Any(x => x.NextStationId == StationToEdit.Id) && distanceValue == 0)
+                if ((Stations.Any(x => x.NextStationId == StationToEdit.Id) && distanceValue == 0))
                 {
                     MessageBox.Show("Distance cannot be 0");
+                }
+                else if (StationToEdit.PreviousStationId == -1 && distanceValue > 0)
+                {
+                    MessageBox.Show("Distance cannot be bigger than 0");
                 }
                 else
                 {

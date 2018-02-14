@@ -351,8 +351,8 @@ namespace DataAccess.Repository
                     {
                         mCmd.Parameters.AddWithValue("@TrainLineName", trainLine.TrainLineName);
                         mCmd.Parameters.AddWithValue("@TrainLineColour", trainLine.TrainLineColour);
-                        mCmd.Parameters.AddWithValue("@TrainTravelSpeed", trainLine.TrainLineColour);
-                        mCmd.Parameters.AddWithValue("@TrainDepartureDelay", trainLine.TrainLineColour);
+                        mCmd.Parameters.AddWithValue("@TrainTravelSpeed", trainLine.TrainTravelSpeed);
+                        mCmd.Parameters.AddWithValue("@TrainDepartureDelay", trainLine.TrainDepartureDelay);
                         mCmd.Parameters.AddWithValue("@Id", trainLine.Id);
                         mCmd.ExecuteNonQuery();
                     }

@@ -286,7 +286,7 @@
             this.DelayStartStationComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DelayStartStationComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.DelayStartStationComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.DelayStartStationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.DelayStartStationComboBox.FormattingEnabled = true;
             this.DelayStartStationComboBox.Location = new System.Drawing.Point(3, 24);
