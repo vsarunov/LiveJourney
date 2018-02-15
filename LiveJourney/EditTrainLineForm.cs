@@ -18,7 +18,7 @@ namespace LiveJourney
         private readonly IMainRepository MainRepo;
         private readonly IEnumerable<TrainLine> TrainLines;
         private readonly TrainLine TrainLineToEdit;
-        private readonly IEnumerable<DelayModel> Delays;
+        private readonly List<DelayModel> Delays = new List<DelayModel>();
 
         public EditTrainLineForm(TrainLine trainLineToEdit, IEnumerable<TrainLine> trainLinesToCheck, IMainRepository mainRepo)
         {
@@ -31,15 +31,21 @@ namespace LiveJourney
             this.RemoveUsedColours();
             this.SetTextBox();
             this.SetSelecedColour();
-            this.Delays = this.MainRepo.ReadDelay();
+            this.Delays.AddRange(this.MainRepo.ReadDelay());
+            this.PopulateDelaysList();
         }
 
         private void PopulateDelaysList()
         {
-            //foreach (var item in this.Delays)
-            //{
-            //    this.listView1.Items.Add(new ListViewItem(new[] { this.DelayStartStaionComboBox.Text, this.DelayFinishComboBox.Text, this.DelayTimeBox.Text }));
-            //}
+            foreach (var item in this.Delays)
+            {
+                var startStationName = this.TrainLineToEdit.Stations.Where(x => x.Id == item.StartDelayStationId).FirstOrDefault()?.StationName;
+                var finishStationName = this.TrainLineToEdit.Stations.Where(x => x.Id == item.EndDelayStationId).FirstOrDefault()?.StationName;
+                if (startStationName != null && finishStationName != null)
+                {
+                    this.listView1.Items.Add(new ListViewItem(new[] { startStationName, finishStationName, item.DelayTime.ToString() }));
+                }
+            }
         }
 
         private void PopulateFirstStationComboBox()
@@ -134,6 +140,7 @@ namespace LiveJourney
                 {
                     var delayObject = new DelayModel() { DelayTime = long.Parse(this.DelayTimeBox.Text), StartDelayStationId = startStation.Id, EndDelayStationId = finishStation.Id, TrainLineId = this.TrainLineToEdit.Id, TimeStamp = DateTime.Now.Ticks };
                     this.MainRepo.InsertDelay(delayObject);
+                    this.Delays.Add(delayObject);
                     this.listView1.Items.Add(new ListViewItem(new[] { this.DelayStartStaionComboBox.Text, this.DelayFinishComboBox.Text, this.DelayTimeBox.Text }));
                     this.DelayStartStaionComboBox.Text = string.Empty;
                     this.DelayFinishComboBox.Text = string.Empty;
@@ -161,6 +168,27 @@ namespace LiveJourney
             else
             {
                 this.DelayFinishComboBox.Items.Clear();
+            }
+        }
+
+        private void RemoveDelayButton_Click(object sender, EventArgs e)
+        {
+            if (this.listView1.SelectedItems.Count != 0)
+            {
+                var listItemToDelete = this.listView1.SelectedItems[0];
+                var startStation = this.TrainLineToEdit.Stations.Where(x => x.StationName == listItemToDelete.SubItems[0].Text).FirstOrDefault();
+                var finishStation = this.TrainLineToEdit.Stations.Where(x => x.StationName == listItemToDelete.SubItems[1].Text).FirstOrDefault();
+                if (startStation != null && finishStation != null)
+                {
+                    var itemToDelete = this.Delays.Where(x => x.StartDelayStationId == startStation.Id && x.EndDelayStationId == finishStation.Id && x.DelayTime == long.Parse(listItemToDelete.SubItems[2].Text)).FirstOrDefault();
+                    if (itemToDelete != null)
+                    {
+                        this.MainRepo.DeleteDelay(itemToDelete);
+                        this.listView1.Items.Remove(listItemToDelete);
+                        this.Delays.Remove(itemToDelete);
+                    }
+                }
+
             }
         }
     }

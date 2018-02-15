@@ -36,24 +36,24 @@
             this.TrainLineColourComboBox = new System.Windows.Forms.ComboBox();
             this.SubmitEditingsButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.TrainTravelSpeedTextBox = new MyCustomTextBox.MyBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.TrainDepartureTimeTextBox = new MyCustomTextBox.MyBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.AddDelayButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
+            this.DelayTimeBox = new MyCustomTextBox.MyBox();
+            this.DelayStartStaionComboBox = new System.Windows.Forms.ComboBox();
+            this.DelayFinishComboBox = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.RemoveDelayButton = new System.Windows.Forms.Button();
-            this.DelayStartStaionComboBox = new System.Windows.Forms.ComboBox();
-            this.DelayFinishComboBox = new System.Windows.Forms.ComboBox();
-            this.TrainTravelSpeedTextBox = new MyCustomTextBox.MyBox();
-            this.TrainDepartureTimeTextBox = new MyCustomTextBox.MyBox();
-            this.DelayTimeBox = new MyCustomTextBox.MyBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -183,6 +183,16 @@
             this.label1.TabIndex = 7;
             this.label1.Text = "Train Travel Speed (km)";
             // 
+            // TrainTravelSpeedTextBox
+            // 
+            this.TrainTravelSpeedTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TrainTravelSpeedTextBox.Location = new System.Drawing.Point(3, 154);
+            this.TrainTravelSpeedTextBox.Name = "TrainTravelSpeedTextBox";
+            this.TrainTravelSpeedTextBox.Size = new System.Drawing.Size(159, 20);
+            this.TrainTravelSpeedTextBox.TabIndex = 0;
+            // 
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -195,6 +205,16 @@
             this.label2.Size = new System.Drawing.Size(159, 28);
             this.label2.TabIndex = 8;
             this.label2.Text = "Train departs every (min)";
+            // 
+            // TrainDepartureTimeTextBox
+            // 
+            this.TrainDepartureTimeTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TrainDepartureTimeTextBox.Location = new System.Drawing.Point(3, 214);
+            this.TrainDepartureTimeTextBox.Name = "TrainDepartureTimeTextBox";
+            this.TrainDepartureTimeTextBox.Size = new System.Drawing.Size(159, 20);
+            this.TrainDepartureTimeTextBox.TabIndex = 0;
             // 
             // tableLayoutPanel3
             // 
@@ -283,6 +303,39 @@
             this.label5.TabIndex = 5;
             this.label5.Text = "Delay Time in minutes:";
             // 
+            // DelayTimeBox
+            // 
+            this.DelayTimeBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DelayTimeBox.Location = new System.Drawing.Point(3, 146);
+            this.DelayTimeBox.Name = "DelayTimeBox";
+            this.DelayTimeBox.Size = new System.Drawing.Size(196, 20);
+            this.DelayTimeBox.TabIndex = 0;
+            // 
+            // DelayStartStaionComboBox
+            // 
+            this.DelayStartStaionComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DelayStartStaionComboBox.FormattingEnabled = true;
+            this.DelayStartStaionComboBox.Location = new System.Drawing.Point(3, 24);
+            this.DelayStartStaionComboBox.Name = "DelayStartStaionComboBox";
+            this.DelayStartStaionComboBox.Size = new System.Drawing.Size(196, 21);
+            this.DelayStartStaionComboBox.TabIndex = 6;
+            this.DelayStartStaionComboBox.SelectedValueChanged += new System.EventHandler(this.comboBox1_SelectedValueChanged);
+            // 
+            // DelayFinishComboBox
+            // 
+            this.DelayFinishComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DelayFinishComboBox.FormattingEnabled = true;
+            this.DelayFinishComboBox.Location = new System.Drawing.Point(3, 84);
+            this.DelayFinishComboBox.Name = "DelayFinishComboBox";
+            this.DelayFinishComboBox.Size = new System.Drawing.Size(196, 21);
+            this.DelayFinishComboBox.TabIndex = 7;
+            // 
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 1;
@@ -339,59 +392,7 @@
             this.RemoveDelayButton.TabIndex = 1;
             this.RemoveDelayButton.Text = "Remove Selected Delay";
             this.RemoveDelayButton.UseVisualStyleBackColor = true;
-            // 
-            // DelayStartStaionComboBox
-            // 
-            this.DelayStartStaionComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.DelayStartStaionComboBox.FormattingEnabled = true;
-            this.DelayStartStaionComboBox.Location = new System.Drawing.Point(3, 24);
-            this.DelayStartStaionComboBox.Name = "DelayStartStaionComboBox";
-            this.DelayStartStaionComboBox.Size = new System.Drawing.Size(196, 21);
-            this.DelayStartStaionComboBox.TabIndex = 6;
-            this.DelayStartStaionComboBox.SelectedValueChanged += new System.EventHandler(this.comboBox1_SelectedValueChanged);
-            // 
-            // DelayFinishComboBox
-            // 
-            this.DelayFinishComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.DelayFinishComboBox.FormattingEnabled = true;
-            this.DelayFinishComboBox.Location = new System.Drawing.Point(3, 84);
-            this.DelayFinishComboBox.Name = "DelayFinishComboBox";
-            this.DelayFinishComboBox.Size = new System.Drawing.Size(196, 21);
-            this.DelayFinishComboBox.TabIndex = 7;
-            // 
-            // TrainTravelSpeedTextBox
-            // 
-            this.TrainTravelSpeedTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TrainTravelSpeedTextBox.Location = new System.Drawing.Point(3, 154);
-            this.TrainTravelSpeedTextBox.Name = "TrainTravelSpeedTextBox";
-            this.TrainTravelSpeedTextBox.Size = new System.Drawing.Size(159, 20);
-            this.TrainTravelSpeedTextBox.TabIndex = 0;
-            // 
-            // TrainDepartureTimeTextBox
-            // 
-            this.TrainDepartureTimeTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TrainDepartureTimeTextBox.Location = new System.Drawing.Point(3, 214);
-            this.TrainDepartureTimeTextBox.Name = "TrainDepartureTimeTextBox";
-            this.TrainDepartureTimeTextBox.Size = new System.Drawing.Size(159, 20);
-            this.TrainDepartureTimeTextBox.TabIndex = 0;
-            // 
-            // DelayTimeBox
-            // 
-            this.DelayTimeBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.DelayTimeBox.Location = new System.Drawing.Point(3, 146);
-            this.DelayTimeBox.Name = "DelayTimeBox";
-            this.DelayTimeBox.Size = new System.Drawing.Size(196, 20);
-            this.DelayTimeBox.TabIndex = 0;
+            this.RemoveDelayButton.Click += new System.EventHandler(this.RemoveDelayButton_Click);
             // 
             // EditTrainLineForm
             // 
