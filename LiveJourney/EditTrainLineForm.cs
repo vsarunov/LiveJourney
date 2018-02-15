@@ -18,6 +18,7 @@ namespace LiveJourney
         private readonly IMainRepository MainRepo;
         private readonly IEnumerable<TrainLine> TrainLines;
         private readonly TrainLine TrainLineToEdit;
+        private readonly IEnumerable<DelayModel> Delays;
 
         public EditTrainLineForm(TrainLine trainLineToEdit, IEnumerable<TrainLine> trainLinesToCheck, IMainRepository mainRepo)
         {
@@ -30,13 +31,22 @@ namespace LiveJourney
             this.RemoveUsedColours();
             this.SetTextBox();
             this.SetSelecedColour();
+            this.Delays = this.MainRepo.ReadDelay();
+        }
+
+        private void PopulateDelaysList()
+        {
+            //foreach (var item in this.Delays)
+            //{
+            //    this.listView1.Items.Add(new ListViewItem(new[] { this.DelayStartStaionComboBox.Text, this.DelayFinishComboBox.Text, this.DelayTimeBox.Text }));
+            //}
         }
 
         private void PopulateFirstStationComboBox()
         {
-            foreach (var item in TrainLineToEdit.Stations)
+            foreach (var item in this.TrainLineToEdit.Stations)
             {
-                this.DelayStartStationComboBox.Items.Add(item.StationName);
+                this.DelayStartStaionComboBox.Items.Add(item.StationName);
             }
         }
 
@@ -116,27 +126,41 @@ namespace LiveJourney
 
         private void AddDelayButton_Click(object sender, EventArgs e)
         {
-
+            if (!this.CheckIfValidInput(this.DelayStartStaionComboBox.Text) && !this.CheckIfValidInput(this.DelayFinishComboBox.Text) && !this.CheckIfValidInput(this.DelayTimeBox.Text))
+            {
+                var startStation = this.TrainLineToEdit.Stations.Where(x => x.StationName == this.DelayStartStaionComboBox.Text).FirstOrDefault();
+                var finishStation = this.TrainLineToEdit.Stations.Where(x => x.StationName == this.DelayFinishComboBox.Text).FirstOrDefault();
+                if (startStation != null && finishStation != null)
+                {
+                    var delayObject = new DelayModel() { DelayTime = long.Parse(this.DelayTimeBox.Text), StartDelayStationId = startStation.Id, EndDelayStationId = finishStation.Id, TrainLineId = this.TrainLineToEdit.Id, TimeStamp = DateTime.Now.Ticks };
+                    this.MainRepo.InsertDelay(delayObject);
+                    this.listView1.Items.Add(new ListViewItem(new[] { this.DelayStartStaionComboBox.Text, this.DelayFinishComboBox.Text, this.DelayTimeBox.Text }));
+                    this.DelayStartStaionComboBox.Text = string.Empty;
+                    this.DelayFinishComboBox.Text = string.Empty;
+                    this.DelayTimeBox.Text = string.Empty;
+                }
+            }
         }
 
-        private void DelayStartStationComboBox_SelectedValueChanged(object sender, EventArgs e)
+        private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (!this.CheckIfValidInput(this.DelayStartStationComboBox.Text))
+            if (!this.CheckIfValidInput(this.DelayStartStaionComboBox.Text))
             {
-                var station = this.TrainLineToEdit.Stations.Where(x => x.StationName == this.DelayStartStationComboBox.Text).FirstOrDefault();
+                this.DelayFinishComboBox.Items.Clear();
+                var station = this.TrainLineToEdit.Stations.Where(x => x.StationName == this.DelayStartStaionComboBox.Text).FirstOrDefault();
                 do
                 {
                     if (station != null)
                     {
-                        this.DelayFinishStationComboBox.Items.Add(station.StationName);
+                        this.DelayFinishComboBox.Items.Add(station.StationName);
                         station = this.TrainLineToEdit.Stations.Where(x => x.Id == station.NextStationId).FirstOrDefault();
                     }
                 }
-                while (station.NextStationId != -1 && station != null);
+                while (station != null);
             }
             else
             {
-                this.DelayFinishStationComboBox.Items.Clear();
+                this.DelayFinishComboBox.Items.Clear();
             }
         }
     }

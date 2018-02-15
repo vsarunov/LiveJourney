@@ -20,7 +20,7 @@ namespace LiveJourney
             if (!this.CheckIfValidInput(this.UsernameTextbox.Text) && !this.CheckIfValidInput(this.PasswordTextBox.Text))
             {
                 var user = MainRepo.GetUser(this.UsernameTextbox.Text);
-                if (this.PasswordTextBox.Text == user.Password && user.AdminType == 1)
+                if (user != null && this.PasswordTextBox.Text == user.Password && user.AdminType == 1)
                 {
                     ShouldClose = false;
                     new ManagementForm(MainRepo).Show();
