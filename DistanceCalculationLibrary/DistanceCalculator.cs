@@ -14,6 +14,7 @@
         private readonly List<DelayModel> Delays = new List<DelayModel>();
         private readonly List<TrainLine> TrainLines = new List<TrainLine>();
         private readonly List<Station> Stations = new List<Station>();
+
         public DistanceCalculator()
         {
             this.Delays.AddRange(this.MainRepo.ReadDelay());
