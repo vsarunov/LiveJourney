@@ -63,7 +63,7 @@
             var stations = this.MainRepo.ReadStations();
             foreach (var item in this.TrainLines)
             {
-                item.Stations = stations.Where(x => x.TrainLineId == item.Id).ToList();
+                item.Stations = stations.Where(x => x.TrainLineId == item.Id).OrderBy(x => x.PreviousStationId).ToList();
             }
         }
 
