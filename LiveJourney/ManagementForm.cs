@@ -74,7 +74,8 @@
             {
                 var listViewItem = new ListViewItem(new[] { item.TrainLineName, item.TrainLineColour, item.TrainTravelSpeed.ToString(), item.TrainDepartureDelay.ToString() });
                 Color colour = Color.FromName(item.TrainLineColour);
-                listViewItem.ForeColor = colour;
+                listViewItem.SubItems[1].ForeColor = colour;
+                listViewItem.UseItemStyleForSubItems = false;
                 this.TrainLineListView.Items.Add(listViewItem);
                 this.RemoveColourFromComboBox(item.TrainLineColour);
             }

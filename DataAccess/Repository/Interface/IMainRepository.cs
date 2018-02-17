@@ -18,5 +18,8 @@
         void UpdateDelay(DelayModel delay);
         IEnumerable<DelayModel> ReadDelay();
         void DeleteDelay(DelayModel delay);
+        Station ReadStationsById(long id);
+        long ReadConfig();
+        void InsertConfig();
     }
 }

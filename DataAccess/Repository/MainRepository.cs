@@ -24,6 +24,7 @@ namespace DataAccess.Repository
             this.CreateTrainLineTable();
             this.CreateStationTable();
             this.CreateDelayTable();
+            this.CreateConfigTable();
         }
 
         private static string CREATE_USER_TABLE =
@@ -71,6 +72,18 @@ namespace DataAccess.Repository
                 FOREIGN KEY(EndDelayStationId) REFERENCES Stations(Id));
             ";
 
+        private static string CREATE_CONFIG_TABLE =
+            @"
+            CREATE TABLE IF NOT EXISTS [Configurations]
+            (Id INTEGER PRIMARY KEY AUTOINCREMENT,
+             MockDataAdded INTEGER NOT NULL);
+            ";
+
+        private static string INSERT_CONFIG =
+            @"
+              INSERT INTO Configurations (MockDataAdded) VALUES (@MockDataAdded);
+            ";
+
         private static string INSERT_TRAIN_LINE =
             @"
               INSERT INTO TrainLines (TrainLineName,TrainLineColour,TrainTravelSpeed,TrainDepartureDelay) VALUES (@TrainLineName,@TrainLineColour,@TrainTravelSpeed,@TrainDepartureDelay);
@@ -99,6 +112,11 @@ namespace DataAccess.Repository
         private static string UPDATE_DELAY =
             @"
                UPDATE DelayTable SET DelayTime = @DelayTime, TrainLineId = @TrainLineId, StartDelayStationId = @StartDelayStationId, EndDelayStationId = @EndDelayStationId, TimeStamp = @TimeStamp WHERE Id = @Id;
+            ";
+
+        private static string READ_CONFIG =
+            @"
+                SELECT MockDataAdded FROM Configurations;
             ";
 
         private static string READ_TRAIN_LINES =
@@ -131,9 +149,30 @@ namespace DataAccess.Repository
                DELETE FROM DelayTable WHERE Id = @Id
             ";
 
+        private static string SELECT_STATION_BY_ID = @"SELECT * FROM Stations WHERE Id = @Id;";
+
         private static string INSERT_ADMIN_USER = @"INSERT INTO UserTable (Username,Password,AdminType) VALUES(@Username,@Password,@AdminType);";
 
         private static string GET_USER = @"SELECT * FROM UserTable WHERE Username = :Username;";
+
+        private void CreateConfigTable()
+        {
+            try
+            {
+                using (var sqliteConnection = new SQLiteConnection(this.DatabasePath))
+                {
+                    sqliteConnection.Open();
+                    using (SQLiteCommand mCmd = new SQLiteCommand(CREATE_CONFIG_TABLE, sqliteConnection))
+                    {
+                        mCmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
 
         private void CreateUserTable()
         {
@@ -284,6 +323,26 @@ namespace DataAccess.Repository
             }
         }
 
+        public void InsertConfig()
+        {
+            try
+            {
+                using (var sqliteConnection = new SQLiteConnection(this.DatabasePath))
+                {
+                    sqliteConnection.Open();
+                    using (SQLiteCommand mCmd = new SQLiteCommand(INSERT_CONFIG, sqliteConnection))
+                    {
+                        mCmd.Parameters.AddWithValue("@MockDataAdded", 1);
+                        mCmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public long InsertStation(Station station)
         {
             long lastInsertedId = -1;
@@ -414,6 +473,22 @@ namespace DataAccess.Repository
             }
         }
 
+        public long ReadConfig()
+        {
+            try
+            {
+                using (var sqliteConnection = new SQLiteConnection(this.DatabasePath))
+                {
+                    sqliteConnection.Open();
+                    return sqliteConnection.Query<long>(READ_CONFIG).FirstOrDefault();
+                }
+            }
+            catch (Exception e)
+            {
+                return -1;
+            }
+        }
+
         public IEnumerable<TrainLine> ReadTrainLines()
         {
             try
@@ -443,6 +518,25 @@ namespace DataAccess.Repository
             catch (Exception e)
             {
                 return Enumerable.Empty<Station>();
+            }
+        }
+
+        public Station ReadStationsById(long id)
+        {
+            try
+            {
+                using (var sqliteConnection = new SQLiteConnection(this.DatabasePath))
+                {
+                    sqliteConnection.Open();
+                    return sqliteConnection.Query<Station>(SELECT_STATION_BY_ID, new
+                    {
+                        Id = id
+                    }).FirstOrDefault();
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
             }
         }
 

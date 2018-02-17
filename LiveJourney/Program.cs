@@ -16,10 +16,10 @@ namespace LiveJourney
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //var mainForm = new Form1();
-            //mainForm.Show();
-            //Application.Run();
             InsertMockData md = new InsertMockData();
+            var mainForm = new Form1();
+            mainForm.Show();
+            Application.Run();
         }
     }
 }
