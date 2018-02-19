@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DistanceCalculationLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,10 +17,11 @@ namespace LiveJourney
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            InsertMockData md = new InsertMockData();
-            var mainForm = new Form1();
-            mainForm.Show();
-            Application.Run();
+            //InsertMockData md = new InsertMockData();
+            CalculationManager.CalculateRoute("Stanmore", "Finsbury Park");
+            //var mainForm = new Form1();
+            //mainForm.Show();
+            //Application.Run();
         }
     }
 }

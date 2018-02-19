@@ -132,6 +132,10 @@
       <Project>{3a880647-881e-4865-88c1-30b5137fd3d8}</Project>
       <Name>DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DistanceCalculationLibrary\DistanceCalculationLibrary.csproj">
+      <Project>{b3d8f031-b623-46e8-b81a-21eb267a3b38}</Project>
+      <Name>DistanceCalculationLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
       <Project>{38386ed1-2525-4d5a-a6fe-18e8b3184903}</Project>
       <Name>Infrastructure</Name>
