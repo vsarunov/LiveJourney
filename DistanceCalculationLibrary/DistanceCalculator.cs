@@ -46,19 +46,22 @@
 
         public Queue<Station> CalculateRoute(Station startStation, Station finishStation, Dictionary<long, long> visitedStations, Queue<Station> stationsRoute = null)
         {
-            var startStations = this.Stations.Where(x => x.StationName == startStation.StationName);
+            var startStations = this.Stations.Where(x => x.StationName == startStation.StationName).OrderBy(x => startStation.Id);
             List<Queue<Station>> queList = new List<Queue<Station>>();
 
             foreach (var item in startStations)
             {
-                Queue<Station> leftRoute = new Queue<Station>(stationsRoute);
-                Queue<Station> rightRoute = new Queue<Station>(stationsRoute);
-
                 long keyExists;
                 if (!visitedStations.TryGetValue(item.Id, out keyExists))
                 {
                     visitedStations.Add(item.Id, item.Id);
                 }
+            }
+
+            foreach (var item in startStations)
+            {
+                Queue<Station> leftRoute = new Queue<Station>(stationsRoute);
+                Queue<Station> rightRoute = new Queue<Station>(stationsRoute);
 
                 var nextStationLeft = Stations.Where(x => x.Id == item.NextStationId).FirstOrDefault();
                 var nextStationRight = Stations.Where(x => x.Id == item.PreviousStationId).FirstOrDefault();
@@ -66,12 +69,14 @@
                 if (nextStationLeft != null && nextStationLeft.StationName == finishStation.StationName)
                 {
                     stationsRoute.Enqueue(nextStationLeft);
-                    return stationsRoute;
+                    queList.Add(stationsRoute);
+                    continue;
                 }
                 else if (nextStationRight != null && nextStationRight.StationName == finishStation.StationName)
                 {
                     stationsRoute.Enqueue(nextStationRight);
-                    return stationsRoute;
+                    queList.Add(stationsRoute);
+                    continue;
                 }
 
                 long nextStationLeftIsVisited;
@@ -107,8 +112,8 @@
         {
             if (leftRoute != null && rightRoute != null)
             {
-                var leftSum = leftRoute.Select(x => x.DistanceToPreviousStation).Count();
-                var rightSum = rightRoute.Select(x => x.DistanceToPreviousStation).Count();
+                var leftSum = leftRoute.Select(x => x.DistanceToPreviousStation).Sum();
+                var rightSum = rightRoute.Select(x => x.DistanceToPreviousStation).Sum();
                 queList.Add(leftSum > rightSum ? rightRoute : leftRoute);
             }
             else if (leftRoute == null && rightRoute != null)
@@ -128,9 +133,9 @@
             {
                 for (int i = 0; i < routeList.Count; i++)
                 {
-                    if (element.Select(x => x.DistanceToPreviousStation).Count() > routeList[i].Select(x => x.DistanceToPreviousStation).Count())
+                    if (element.Select(x => x.DistanceToPreviousStation).Sum() > routeList[i].Select(x => x.DistanceToPreviousStation).Sum())
                     {
-                        element = routeList[0];
+                        element = routeList[i];
                     }
                 }
             }

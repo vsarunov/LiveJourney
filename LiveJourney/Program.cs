@@ -18,7 +18,7 @@ namespace LiveJourney
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //InsertMockData md = new InsertMockData();
-            CalculationManager.CalculateRoute("Stanmore", "Finsbury Park");
+            CalculationManager.CalculateRoute("King’s Cross St. Pancras", "Finsbury Park");
             //var mainForm = new Form1();
             //mainForm.Show();
             //Application.Run();
