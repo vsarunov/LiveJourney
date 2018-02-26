@@ -41,6 +41,7 @@
                 Queue<Station> stationRoute = new Queue<Station>();
                 stationRoute.Enqueue(startStation);
                 var result = this.CalculateRoute(startStation, finishStation, visitedStations, stationRoute);
+                var res = this.PrepareOutput(result);
             }
         }
 
@@ -49,13 +50,10 @@
             var startStations = this.Stations.Where(x => x.StationName == startStation.StationName).OrderBy(x => startStation.Id);
             List<Queue<Station>> queList = new List<Queue<Station>>();
 
-            foreach (var item in startStations)
+            long keyExists;
+            if (!visitedStations.TryGetValue(startStation.Id, out keyExists))
             {
-                long keyExists;
-                if (!visitedStations.TryGetValue(item.Id, out keyExists))
-                {
-                    visitedStations.Add(item.Id, item.Id);
-                }
+                visitedStations.Add(startStation.Id, startStation.Id);
             }
 
             foreach (var item in startStations)
@@ -72,7 +70,8 @@
                     queList.Add(stationsRoute);
                     continue;
                 }
-                else if (nextStationRight != null && nextStationRight.StationName == finishStation.StationName)
+
+                if (nextStationRight != null && nextStationRight.StationName == finishStation.StationName)
                 {
                     stationsRoute.Enqueue(nextStationRight);
                     queList.Add(stationsRoute);
@@ -86,6 +85,10 @@
                 {
                     leftRoute.Enqueue(nextStationLeft);
                     leftRoute = CalculateRoute(nextStationLeft, finishStation, visitedStations, leftRoute);
+                    if (leftRoute != null)
+                    {
+                        visitedStations.Remove(nextStationLeft.Id);
+                    }
                 }
                 else
                 {
@@ -96,6 +99,10 @@
                 {
                     rightRoute.Enqueue(nextStationRight);
                     rightRoute = CalculateRoute(nextStationRight, finishStation, visitedStations, rightRoute);
+                    if (rightRoute != null)
+                    {
+                        visitedStations.Remove(nextStationRight.Id);
+                    }
                 }
                 else
                 {
@@ -140,6 +147,30 @@
                 }
             }
             return element;
+        }
+
+        private string PrepareOutput(Queue<Station> stations)
+        {
+            Station station = stations.Dequeue();
+
+            StringBuilder result = new StringBuilder();
+            result.Append("Take: " + this.TrainLines.Where(x => x.Id == station.TrainLineId).Select(x => x.TrainLineName).FirstOrDefault() + " line at station: ");
+            result.AppendLine(station.StationName);
+            while (stations.Count > 0)
+            {
+                Station nextStation = stations.Dequeue();
+                if (nextStation.TrainLineId != station.TrainLineId)
+                {
+                    result.AppendLine("At station: " + station.StationName + " change for: " + this.TrainLines.Where(x => x.Id == nextStation.TrainLineId).Select(x => x.TrainLineName).FirstOrDefault() + " line");
+                }
+                else
+                {
+                    result.Append(nextStation.StationName);
+                }
+                station = nextStation;
+            }
+
+            return result.ToString();
         }
     }
 }
