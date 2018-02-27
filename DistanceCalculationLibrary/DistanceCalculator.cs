@@ -47,7 +47,7 @@
 
         public Queue<Station> CalculateRoute(Station startStation, Station finishStation, Dictionary<long, long> visitedStations, Queue<Station> stationsRoute = null)
         {
-            var startStations = this.Stations.Where(x => x.StationName == startStation.StationName).OrderBy(x => startStation.Id);
+            var startStations = this.Stations.Where(x => x.StationName == startStation.StationName);
             List<Queue<Station>> queList = new List<Queue<Station>>();
 
             long keyExists;
@@ -81,20 +81,6 @@
                 long nextStationLeftIsVisited;
                 long nextStationRightIsVisited;
 
-                if (nextStationLeft != null && !visitedStations.TryGetValue(nextStationLeft.Id, out nextStationLeftIsVisited))
-                {
-                    leftRoute.Enqueue(nextStationLeft);
-                    leftRoute = CalculateRoute(nextStationLeft, finishStation, visitedStations, leftRoute);
-                    if (leftRoute != null)
-                    {
-                        visitedStations.Remove(nextStationLeft.Id);
-                    }
-                }
-                else
-                {
-                    leftRoute = null;
-                }
-
                 if (nextStationRight != null && !visitedStations.TryGetValue(nextStationRight.Id, out nextStationRightIsVisited))
                 {
                     rightRoute.Enqueue(nextStationRight);
@@ -107,6 +93,20 @@
                 else
                 {
                     rightRoute = null;
+                }
+
+                if (nextStationLeft != null && !visitedStations.TryGetValue(nextStationLeft.Id, out nextStationLeftIsVisited))
+                {
+                    leftRoute.Enqueue(nextStationLeft);
+                    leftRoute = CalculateRoute(nextStationLeft, finishStation, visitedStations, leftRoute);
+                    if (leftRoute != null)
+                    {
+                        visitedStations.Remove(nextStationLeft.Id);
+                    }
+                }
+                else
+                {
+                    leftRoute = null;
                 }
 
                 this.AddTheShortest(queList, leftRoute, rightRoute);
@@ -154,7 +154,7 @@
             Station station = stations.Dequeue();
 
             StringBuilder result = new StringBuilder();
-            result.Append("Take: " + this.TrainLines.Where(x => x.Id == station.TrainLineId).Select(x => x.TrainLineName).FirstOrDefault() + " line at station: ");
+            result.AppendLine("Take: " + this.TrainLines.Where(x => x.Id == station.TrainLineId).Select(x => x.TrainLineName).FirstOrDefault() + " line at station: ");
             result.AppendLine(station.StationName);
             while (stations.Count > 0)
             {
@@ -163,14 +163,40 @@
                 {
                     result.AppendLine("At station: " + station.StationName + " change for: " + this.TrainLines.Where(x => x.Id == nextStation.TrainLineId).Select(x => x.TrainLineName).FirstOrDefault() + " line");
                 }
-                else
-                {
-                    result.Append(nextStation.StationName);
-                }
+
+                result.AppendLine(nextStation.StationName);
+
                 station = nextStation;
             }
 
             return result.ToString();
+        }
+
+        // we spend 2 mins on each station
+        // each train line change adds 15mins
+        // train has a travel speed and distance to the next station
+        private long CalculateTravelTime(Queue<Station> stations)
+        {
+            // we multiply all the stations we have to travel by 2 minutes spend on each station and minus 4 for the stations we entered and came out
+            var minutesSpendOnStations = stations.Count * 2 - 4;
+
+            long firstId = -1;
+            var minutesWhileChangingLines = stations.Select(x => x.TrainLineId).Distinct().Select(x =>
+            {
+                if (firstId != x && firstId != -1)
+                {
+                    firstId = x;
+                    return 15;
+                }
+                firstId = x;
+                return 0;
+            }).Sum();
+
+            foreach (var item in stations)
+            {
+
+            }
+            return 0;
         }
     }
 }

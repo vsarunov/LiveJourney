@@ -310,7 +310,7 @@ namespace DataAccess.Repository
                         mCmd.Parameters.AddWithValue("@TrainLineName", trainLine.TrainLineName);
                         mCmd.Parameters.AddWithValue("@TrainLineColour", trainLine.TrainLineColour);
                         mCmd.Parameters.AddWithValue("@TrainTravelSpeed", trainLine.TrainTravelSpeed);
-                        mCmd.Parameters.AddWithValue("@TrainDepartureDelay", trainLine.TrainTravelSpeed);
+                        mCmd.Parameters.AddWithValue("@TrainDepartureDelay", trainLine.TrainDepartureDelay);
                         mCmd.ExecuteNonQuery();
                         lastInsertedId = sqliteConnection.LastInsertRowId;
                     }
