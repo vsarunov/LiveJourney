@@ -20,6 +20,11 @@
             this.Delays.AddRange(this.MainRepo.ReadDelay());
             this.TrainLines.AddRange(this.MainRepo.ReadTrainLines());
             this.Stations.AddRange(this.MainRepo.ReadStations());
+
+            foreach (var item in TrainLines)
+            {
+                item.Stations = Stations.Where(x => x.TrainLineId == item.Id).OrderBy(x => x.PreviousStationId).ToList();
+            }
         }
 
 
@@ -196,7 +201,7 @@
                 Station nextStation = stations.Dequeue();
                 if (nextStation.TrainLineId != station.TrainLineId)
                 {
-                    result.AppendLine("At station: " + station.StationName + " change for: " + this.TrainLines.Where(x => x.Id == nextStation.TrainLineId).Select(x => x.TrainLineName).FirstOrDefault() + " line");
+                    result.AppendLine("At station: " + nextStation.StationName + " change for: " + this.TrainLines.Where(x => x.Id == nextStation.TrainLineId).Select(x => x.TrainLineName).FirstOrDefault() + " line");
                 }
 
                 result.AppendLine(nextStation.StationName);
@@ -241,6 +246,21 @@
             var totalTime = minutesSpendOnStations + minutesWhileChangingLines + trainLineTotalTime;
 
             return totalTime;
+        }
+
+        private void CheckForDelays(Queue<Station> stations)
+        {
+            var trainStationsWithDelays = this.TrainLines.Where(x => this.Delays.Any(d => d.TrainLineId == x.Id) && stations.Any(s => s.TrainLineId == x.Id));
+
+            foreach (var delayedLines in trainStationsWithDelays)
+            {
+                var delaysOnTheLine = this.Delays.Where(x => x.TrainLineId == delayedLines.Id);
+
+                foreach (var delays in delaysOnTheLine)
+                {
+                    var delayedSubLine = delayedLines.Stations.SkipWhile(x => x.Id != delays.StartDelayStationId).TakeWhile(x => x.Id != delays.EndDelayStationId);
+                }
+            }
         }
     }
 }

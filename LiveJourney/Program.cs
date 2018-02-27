@@ -20,9 +20,9 @@ namespace LiveJourney
             InsertMockData md = new InsertMockData();
             var res = CalculationManager.CalculateRoute("Stanmore", "Finsbury Park", null);
             res = CalculationManager.CalculateRoute("King’s Cross St. Pancras", "Finsbury Park", null);
-            //var mainForm = new Form1();
-            //mainForm.Show();
-            //Application.Run();
+            var mainForm = new Form1();
+            mainForm.Show();
+            Application.Run();
         }
     }
 }
