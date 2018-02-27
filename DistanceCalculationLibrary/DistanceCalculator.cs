@@ -30,7 +30,7 @@
         // We know how to calculate how long will it take the train to travel from one station to the other
         // We know that changing the train will add 15min to the journey
         // We assume that trains run between 5am to midnight
-        public void CalculateRoute(string startStationName, string finishStationName)
+        public string CalculateRoute(string startStationName, string finishStationName)
         {
             var startStation = this.Stations.Where(x => x.StationName == startStationName).FirstOrDefault();
             var finishStation = this.Stations.Where(x => x.StationName == finishStationName).FirstOrDefault();
@@ -42,7 +42,10 @@
                 stationRoute.Enqueue(startStation);
                 var result = this.CalculateRoute(startStation, finishStation, visitedStations, stationRoute);
                 var res = this.PrepareOutput(result);
+                return res;
             }
+
+            return string.Empty;
         }
 
         public Queue<Station> CalculateRoute(Station startStation, Station finishStation, Dictionary<long, long> visitedStations, Queue<Station> stationsRoute = null)
@@ -140,7 +143,7 @@
             {
                 for (int i = 0; i < routeList.Count; i++)
                 {
-                    if (element.Select(x => x.DistanceToPreviousStation).Sum() > routeList[i].Select(x => x.DistanceToPreviousStation).Sum())
+                    if (this.CalculateTravelTime(element) > this.CalculateTravelTime(routeList[i]))
                     {
                         element = routeList[i];
                     }
@@ -175,8 +178,9 @@
         // we spend 2 mins on each station
         // each train line change adds 15mins
         // train has a travel speed and distance to the next station
-        private long CalculateTravelTime(Queue<Station> stations)
+        private double CalculateTravelTime(Queue<Station> stations)
         {
+            // t = d/s;
             // we multiply all the stations we have to travel by 2 minutes spend on each station and minus 4 for the stations we entered and came out
             var minutesSpendOnStations = stations.Count * 2 - 4;
 
@@ -192,11 +196,19 @@
                 return 0;
             }).Sum();
 
-            foreach (var item in stations)
-            {
+            var trainLineStationsMap = stations.GroupBy(x => x.TrainLineId).ToDictionary(x => x.Key, y => y.Where(t => t.TrainLineId == y.Key));
 
+            double trainLineTotalTime = 0;
+            foreach (var item in trainLineStationsMap)
+            {
+                var totalDistance = item.Value.Select(x => x.DistanceToPreviousStation).Sum();
+                var trainLineTravelSpeed = this.TrainLines.Where(x => x.Id == item.Key).Select(x => x.TrainTravelSpeed).FirstOrDefault();
+                trainLineTotalTime += totalDistance / trainLineTravelSpeed;
             }
-            return 0;
+
+            var totalTime = minutesSpendOnStations + minutesWhileChangingLines + trainLineTotalTime;
+
+            return totalTime;
         }
     }
 }
