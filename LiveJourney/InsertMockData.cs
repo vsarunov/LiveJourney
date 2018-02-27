@@ -76,7 +76,7 @@ namespace LiveJourney
                     }
 
                     previousStationId = stationId;
-                    distanceToPreviousStation = new Random().Next(5, 30);
+                    distanceToPreviousStation = new Random().Next(80, 150);
 
                 }
             }

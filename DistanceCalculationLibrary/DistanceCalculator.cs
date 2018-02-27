@@ -38,9 +38,9 @@
             Dictionary<long, long> visitedStations = new Dictionary<long, long>();
             if (startStation != null && finishStation != null)
             {
-                Queue<Station> stationRoute = new Queue<Station>();
-                stationRoute.Enqueue(startStation);
-                var result = this.CalculateRoute(startStation, finishStation, visitedStations, stationRoute);
+                Queue<Station> stationsRoute = new Queue<Station>();
+                stationsRoute.Enqueue(startStation);
+                var result = this.CalculateRoute(startStation, finishStation, visitedStations, stationsRoute);
                 var res = this.PrepareOutput(result);
                 return res;
             }
@@ -53,14 +53,28 @@
             var startStations = this.Stations.Where(x => x.StationName == startStation.StationName);
             List<Queue<Station>> queList = new List<Queue<Station>>();
 
-            long keyExists;
-            if (!visitedStations.TryGetValue(startStation.Id, out keyExists))
-            {
-                visitedStations.Add(startStation.Id, startStation.Id);
-            }
-
             foreach (var item in startStations)
             {
+
+                if (startStations.Count() > 1)
+                {
+                    var reverseQueue = new Queue<Station>(stationsRoute.Reverse());
+                    var dequeueItem = reverseQueue.Peek();
+                    if (dequeueItem.StationName == item.StationName && dequeueItem.Id != item.Id)
+                    {
+                        reverseQueue.Dequeue();
+                        var tempQueue = new Queue<Station>(reverseQueue.Reverse());
+                        tempQueue.Enqueue(item);
+                        stationsRoute = tempQueue;
+                    }
+                }
+
+                long keyExists;
+                if (!visitedStations.TryGetValue(startStation.Id, out keyExists))
+                {
+                    visitedStations.Add(startStation.Id, startStation.Id);
+                }
+
                 Queue<Station> leftRoute = new Queue<Station>(stationsRoute);
                 Queue<Station> rightRoute = new Queue<Station>(stationsRoute);
 
@@ -116,6 +130,24 @@
             }
 
             return this.SelectTheMostOptimal(queList);
+        }
+
+        private void ReplaceExistingStation(Queue<Station> stationsRoute, Station item)
+        {
+            if (stationsRoute.Any(x => x.StationName == item.StationName && x.Id != item.Id))
+            {
+                foreach (var queueItem in stationsRoute)
+                {
+                    if (queueItem.StationName == item.StationName && queueItem.Id != item.Id)
+                    {
+                        queueItem.DistanceToPreviousStation = item.DistanceToPreviousStation;
+                        queueItem.Id = item.Id;
+                        queueItem.NextStationId = item.NextStationId;
+                        queueItem.PreviousStationId = item.PreviousStationId;
+                        queueItem.TrainLineId = item.TrainLineId;
+                    }
+                }
+            }
         }
 
         private void AddTheShortest(List<Queue<Station>> queList, Queue<Station> leftRoute, Queue<Station> rightRoute)
