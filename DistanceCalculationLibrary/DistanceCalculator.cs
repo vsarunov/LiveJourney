@@ -46,7 +46,8 @@
                 Queue<Station> stationsRoute = new Queue<Station>();
                 stationsRoute.Enqueue(startStation);
                 var result = this.CalculateRoute(startStation, finishStation, visitedStations, stationsRoute);
-                var res = this.PrepareOutput(result);
+                var totalJourneyTime = this.CalculateTravelTime(result);
+                var res = this.PrepareOutput(result, totalJourneyTime);
                 return res;
             }
 
@@ -189,9 +190,10 @@
             return element;
         }
 
-        private string PrepareOutput(Queue<Station> stations)
+        private string PrepareOutput(Queue<Station> stations, double journeyTime)
         {
             Station station = stations.Dequeue();
+            var totalTimeInInteger = (int)journeyTime;
 
             StringBuilder result = new StringBuilder();
             result.AppendLine("Take: " + this.TrainLines.Where(x => x.Id == station.TrainLineId).Select(x => x.TrainLineName).FirstOrDefault() + " line at station: ");
@@ -208,6 +210,7 @@
 
                 station = nextStation;
             }
+            result.AppendLine("Total journey time: " + totalTimeInInteger + "(min)");
 
             return result.ToString();
         }
@@ -243,24 +246,54 @@
                 trainLineTotalTime += totalDistance / trainLineTravelSpeed;
             }
 
-            var totalTime = minutesSpendOnStations + minutesWhileChangingLines + trainLineTotalTime;
+            var delays = CheckForDelays(stations);
+
+            var totalTime = minutesSpendOnStations + minutesWhileChangingLines + trainLineTotalTime + delays;
 
             return totalTime;
         }
 
-        private void CheckForDelays(Queue<Station> stations)
+        // if the last station where the change happens is the stations that the delay starts - do not add delay
+        // if the start stations is the station where the delay end - do not add delay
+        // if the station is in between or is the starting stations - add the delay
+        private long CheckForDelays(Queue<Station> stations)
         {
+            // we have to measure how many stations does the traveller cross in the delay subline
+            long totalDelay = 0;
             var trainStationsWithDelays = this.TrainLines.Where(x => this.Delays.Any(d => d.TrainLineId == x.Id) && stations.Any(s => s.TrainLineId == x.Id));
 
             foreach (var delayedLines in trainStationsWithDelays)
             {
                 var delaysOnTheLine = this.Delays.Where(x => x.TrainLineId == delayedLines.Id);
+                var currentStationOnDelayedLine = stations.Where(x => x.TrainLineId == delayedLines.Id).ToList();
+                var currentStationOnDelayedLineCount = currentStationOnDelayedLine.Count;
+                var currentStationOnDelayedLineLast = currentStationOnDelayedLine.Last();
+                var currentStationOnDelayedLineFirst = currentStationOnDelayedLine.First();
 
-                foreach (var delays in delaysOnTheLine)
+                foreach (var delay in delaysOnTheLine)
                 {
-                    var delayedSubLine = delayedLines.Stations.SkipWhile(x => x.Id != delays.StartDelayStationId).TakeWhile(x => x.Id != delays.EndDelayStationId);
+                    var delayedSubLine = delayedLines.Stations.SkipWhile(x => x.Id != delay.StartDelayStationId).TakeWhile(x => x.Id != delay.EndDelayStationId || x.Id == delay.EndDelayStationId).ToList();
+                    var indexOfLastStation = delayedSubLine.FindIndex(x => x.Id == currentStationOnDelayedLineLast.Id);
+                    var indexOfFirstStation = delayedSubLine.FindIndex(x => x.Id == currentStationOnDelayedLineFirst.Id);
+                    bool delayHasBeenAdded = false;
+                    if (indexOfLastStation != -1)
+                    {
+                        var stationsTraveledThroughDelay = Math.Abs(indexOfLastStation - currentStationOnDelayedLineCount);
+                        //Check is needed ifthe start delay station is actually the station the passanger comes off
+                        if (stationsTraveledThroughDelay != currentStationOnDelayedLineCount)
+                        {
+                            totalDelay += delay.DelayTime;
+                            delayHasBeenAdded = true;
+                        }
+                    }
+
+                    if (indexOfFirstStation != -1 && indexOfFirstStation != delayedSubLine.Count - 1 && !delayHasBeenAdded)
+                    {
+                        totalDelay += delay.DelayTime;
+                    }
                 }
             }
+            return totalDelay;
         }
     }
 }
