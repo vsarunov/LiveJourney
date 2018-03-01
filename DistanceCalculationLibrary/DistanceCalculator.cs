@@ -43,11 +43,12 @@
             Dictionary<long, long> visitedStations = new Dictionary<long, long>();
             if (startStation != null && finishStation != null)
             {
+                CalculateTimeToLeave();
                 Queue<Station> stationsRoute = new Queue<Station>();
                 stationsRoute.Enqueue(startStation);
                 var result = this.CalculateRoute(startStation, finishStation, visitedStations, stationsRoute);
                 var totalJourneyTime = this.CalculateTravelTime(result);
-                CalculateTimeToLeave(result);
+                CalculateTimeToLeave();
                 var res = this.PrepareOutput(result, totalJourneyTime);
                 return res;
             }
@@ -105,20 +106,6 @@
                 long nextStationLeftIsVisited;
                 long nextStationRightIsVisited;
 
-                if (nextStationRight != null && !visitedStations.TryGetValue(nextStationRight.Id, out nextStationRightIsVisited))
-                {
-                    rightRoute.Enqueue(nextStationRight);
-                    rightRoute = CalculateRoute(nextStationRight, finishStation, visitedStations, rightRoute);
-                    if (rightRoute != null)
-                    {
-                        visitedStations.Remove(nextStationRight.Id);
-                    }
-                }
-                else
-                {
-                    rightRoute = null;
-                }
-
                 if (nextStationLeft != null && !visitedStations.TryGetValue(nextStationLeft.Id, out nextStationLeftIsVisited))
                 {
                     leftRoute.Enqueue(nextStationLeft);
@@ -133,28 +120,25 @@
                     leftRoute = null;
                 }
 
+                if (nextStationRight != null && !visitedStations.TryGetValue(nextStationRight.Id, out nextStationRightIsVisited))
+                {
+                    rightRoute.Enqueue(nextStationRight);
+                    rightRoute = CalculateRoute(nextStationRight, finishStation, visitedStations, rightRoute);
+                    if (rightRoute != null)
+                    {
+                        visitedStations.Remove(nextStationRight.Id);
+                    }
+                }
+                else
+                {
+                    rightRoute = null;
+                }
+
+                //nextStationLeft!=null && nextStationLeft.StationName.Contains("St. Paul")
                 this.AddTheShortest(queList, leftRoute, rightRoute);
             }
 
             return this.SelectTheMostOptimal(queList);
-        }
-
-        private void ReplaceExistingStation(Queue<Station> stationsRoute, Station item)
-        {
-            if (stationsRoute.Any(x => x.StationName == item.StationName && x.Id != item.Id))
-            {
-                foreach (var queueItem in stationsRoute)
-                {
-                    if (queueItem.StationName == item.StationName && queueItem.Id != item.Id)
-                    {
-                        queueItem.DistanceToPreviousStation = item.DistanceToPreviousStation;
-                        queueItem.Id = item.Id;
-                        queueItem.NextStationId = item.NextStationId;
-                        queueItem.PreviousStationId = item.PreviousStationId;
-                        queueItem.TrainLineId = item.TrainLineId;
-                    }
-                }
-            }
         }
 
         private void AddTheShortest(List<Queue<Station>> queList, Queue<Station> leftRoute, Queue<Station> rightRoute)
@@ -297,30 +281,32 @@
             return totalDelay;
         }
 
-        private void CalculateTimeToLeave(Queue<Station> stations)
+        private Dictionary<long, Dictionary<long, DateTime>> CalculateTimeToLeave()
         {
-            var collectionOfTrainLeaving = new List<DateTime>();
-            var firstStation = stations.Peek();
-            var trainLine = this.TrainLines.Where(x => x.Id == firstStation.TrainLineId).FirstOrDefault();
-            if (trainLine != null)
+            var stopTimes = new Dictionary<long, Dictionary<long, DateTime>>();
+
+            foreach (var trainLine in this.TrainLines)
             {
                 //start datetime
                 DateTime now = DateTime.Now;
                 DateTime startDate = now.Date + new TimeSpan(5, 0, 0);
-                DateTime finishDate = now.Date + new TimeSpan(24, 0, 0);
+                // t = d/s;
+                var trainLineSpeed = trainLine.TrainTravelSpeed;
+                var trainLineStations = trainLine.Stations;
 
-                collectionOfTrainLeaving.Add(startDate);
+                var stationStopTimeMap = new Dictionary<long, DateTime>();
+                stationStopTimeMap.Add(trainLineStations[0].Id, startDate);
+                stopTimes.Add(trainLine.Id, stationStopTimeMap);
 
-
-                int dateCompareResult = DateTime.Compare(startDate, finishDate);
-                while (dateCompareResult < 0)
+                for (int i = 1; i < trainLineStations.Count; i++)
                 {
-                    startDate = startDate.AddMinutes(trainLine.TrainDepartureDelay);
-                    dateCompareResult = DateTime.Compare(startDate, finishDate);
-                    if (dateCompareResult < 0)
-                        collectionOfTrainLeaving.Add(startDate);
+                    var timeTakenToReach = trainLineStations[i].DistanceToPreviousStation / trainLineSpeed;
+                    startDate = startDate + new TimeSpan(0, (int)timeTakenToReach, 0);
+                    stationStopTimeMap.Add(trainLineStations[i].Id, startDate);
                 }
             }
+
+            return stopTimes;
         }
     }
 }
