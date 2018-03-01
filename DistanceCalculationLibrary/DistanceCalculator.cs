@@ -47,6 +47,7 @@
                 stationsRoute.Enqueue(startStation);
                 var result = this.CalculateRoute(startStation, finishStation, visitedStations, stationsRoute);
                 var totalJourneyTime = this.CalculateTravelTime(result);
+                CalculateTimeToLeave(result);
                 var res = this.PrepareOutput(result, totalJourneyTime);
                 return res;
             }
@@ -294,6 +295,32 @@
                 }
             }
             return totalDelay;
+        }
+
+        private void CalculateTimeToLeave(Queue<Station> stations)
+        {
+            var collectionOfTrainLeaving = new List<DateTime>();
+            var firstStation = stations.Peek();
+            var trainLine = this.TrainLines.Where(x => x.Id == firstStation.TrainLineId).FirstOrDefault();
+            if (trainLine != null)
+            {
+                //start datetime
+                DateTime now = DateTime.Now;
+                DateTime startDate = now.Date + new TimeSpan(5, 0, 0);
+                DateTime finishDate = now.Date + new TimeSpan(24, 0, 0);
+
+                collectionOfTrainLeaving.Add(startDate);
+
+
+                int dateCompareResult = DateTime.Compare(startDate, finishDate);
+                while (dateCompareResult < 0)
+                {
+                    startDate = startDate.AddMinutes(trainLine.TrainDepartureDelay);
+                    dateCompareResult = DateTime.Compare(startDate, finishDate);
+                    if (dateCompareResult < 0)
+                        collectionOfTrainLeaving.Add(startDate);
+                }
+            }
         }
     }
 }
