@@ -1,0 +1,21 @@
+﻿@model Client.Models.SearchViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<form action="Home/Index" method="post">
+    <div class="form-group">
+        @Html.LabelFor(m => m.StartStation)
+        @Html.DropDownListFor(m => m.StartStation, Model.Stations, "Select a destination station", new { @class = "form-control" })
+        @*@Html.DropDownList("StartStationName", Model, "Select a start station")*@
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.DestinationStation)
+        @Html.DropDownListFor(m => m.DestinationStation, Model.Stations, "Select a destination station", new { @class = "form-control" })
+
+        @*@Html.DropDownList("FinishStationName", Model, "Select a destination station")*@
+    </div>
+    <button type="submit" class="btn btn-primary">Find path</button>
+</form>

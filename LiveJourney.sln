@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistanceCalculationLibrary"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService", "WebService\WebService.csproj", "{131AD05B-CCED-4642-81AB-6EB198DE4ED3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{9CAED2E7-9128-416C-8BE4-46D0B0F01B9E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{131AD05B-CCED-4642-81AB-6EB198DE4ED3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{131AD05B-CCED-4642-81AB-6EB198DE4ED3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{131AD05B-CCED-4642-81AB-6EB198DE4ED3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CAED2E7-9128-416C-8BE4-46D0B0F01B9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CAED2E7-9128-416C-8BE4-46D0B0F01B9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CAED2E7-9128-416C-8BE4-46D0B0F01B9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CAED2E7-9128-416C-8BE4-46D0B0F01B9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
