@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCustomTextBox", "MyCustom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistanceCalculationLibrary", "DistanceCalculationLibrary\DistanceCalculationLibrary.csproj", "{B3D8F031-B623-46E8-B81A-21EB267A3B38}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService", "WebService\WebService.csproj", "{131AD05B-CCED-4642-81AB-6EB198DE4ED3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{B3D8F031-B623-46E8-B81A-21EB267A3B38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3D8F031-B623-46E8-B81A-21EB267A3B38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3D8F031-B623-46E8-B81A-21EB267A3B38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{131AD05B-CCED-4642-81AB-6EB198DE4ED3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{131AD05B-CCED-4642-81AB-6EB198DE4ED3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{131AD05B-CCED-4642-81AB-6EB198DE4ED3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{131AD05B-CCED-4642-81AB-6EB198DE4ED3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

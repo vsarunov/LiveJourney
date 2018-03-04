@@ -32,14 +32,6 @@
             this.StopTimesRevers = CalculateTimeRevers();
         }
 
-
-        // We know that train spends 2 minutes on each stop
-        // we know how often the train leaves in one or the other direction
-        // We know the speed of the train
-        // We know the distance between the stations
-        // We know how to calculate how long will it take the train to travel from one station to the other
-        // We know that changing the train will add 15min to the journey
-        // We assume that trains run between 5am to midnight
         public string CalculateRoute(string startStationName, string finishStationName, DateTime requestedArriveTime)
         {
             var startStation = this.Stations.Where(x => x.StationName == startStationName).FirstOrDefault();
@@ -58,7 +50,7 @@
                 return result;
             }
 
-            return string.Empty;
+            return "Could not find this stations";
         }
 
         private Dictionary<Station, DateTime> SetTimeToArriveTime(DateTime arriveTime, Dictionary<Station, DateTime> stationTimeCollection)
@@ -160,7 +152,6 @@
                     rightRoute = null;
                 }
 
-                //nextStationLeft!=null && nextStationLeft.StationName.Contains("St. Paul")
                 this.AddTheShortest(queList, leftRoute, rightRoute);
             }
 
@@ -213,13 +204,14 @@
         {
             KeyValuePair<Station, DateTime> firstStation = stations.FirstOrDefault();
             var totalTimeInInteger = (int)journeyTime;
-
+            double distance = 0;
             StringBuilder result = new StringBuilder();
             result.AppendLine("Take: " + this.TrainLines.Where(x => x.Id == firstStation.Key.TrainLineId).Select(x => x.TrainLineName).FirstOrDefault() + " line at station: ");
             result.AppendLine(firstStation.Key.StationName + " at time: " + firstStation.Value.Hour + ":" + firstStation.Value.Minute);
 
             foreach (var station in stations)
             {
+                distance += station.Key.DistanceToPreviousStation;
                 if (station.Equals(firstStation)) continue;
                 if (station.Key.TrainLineId != firstStation.Key.TrainLineId)
                 {
@@ -232,7 +224,7 @@
 
             }
             result.AppendLine("Estimated journey time: " + totalTimeInInteger + "(min)");
-
+            result.AppendLine("Total distance covered: " + distance);
             return result.ToString();
         }
 
@@ -281,7 +273,7 @@
                     if (indexOfLastStation != -1)
                     {
                         var stationsTraveledThroughDelay = Math.Abs(indexOfLastStation - currentStationOnDelayedLineCount);
-                        //Check is needed ifthe start delay station is actually the station the passanger comes off
+                        //Check is needed if the start delay station is actually the station the passanger comes off
                         if (stationsTraveledThroughDelay != currentStationOnDelayedLineCount)
                         {
                             totalDelay += delay.DelayTime;
