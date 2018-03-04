@@ -14,7 +14,8 @@
         private readonly List<DelayModel> Delays = new List<DelayModel>();
         private readonly List<TrainLine> TrainLines = new List<TrainLine>();
         private readonly List<Station> Stations = new List<Station>();
-        private readonly Dictionary<long, Dictionary<long, DateTime>> StopTimes = new Dictionary<long, Dictionary<long, DateTime>>();
+        private readonly Dictionary<long, Dictionary<long, DateTime>> StopTimesOriginalDirection = new Dictionary<long, Dictionary<long, DateTime>>();
+        private readonly Dictionary<long, Dictionary<long, DateTime>> StopTimesRevers = new Dictionary<long, Dictionary<long, DateTime>>();
 
         public DistanceCalculator()
         {
@@ -27,7 +28,8 @@
                 item.Stations = Stations.Where(x => x.TrainLineId == item.Id).OrderBy(x => x.PreviousStationId).ToList();
             }
 
-            this.StopTimes = CalculateTime();
+            this.StopTimesOriginalDirection = CalculateTime();
+            this.StopTimesRevers = CalculateTimeRevers();
         }
 
 
@@ -38,7 +40,7 @@
         // We know how to calculate how long will it take the train to travel from one station to the other
         // We know that changing the train will add 15min to the journey
         // We assume that trains run between 5am to midnight
-        public string CalculateRoute(string startStationName, string finishStationName)
+        public string CalculateRoute(string startStationName, string finishStationName, DateTime requestedArriveTime)
         {
             var startStation = this.Stations.Where(x => x.StationName == startStationName).FirstOrDefault();
             var finishStation = this.Stations.Where(x => x.StationName == finishStationName).FirstOrDefault();
@@ -48,14 +50,36 @@
             {
                 Queue<Station> stationsRoute = new Queue<Station>();
                 stationsRoute.Enqueue(startStation);
-                var result = this.CalculateRoute(startStation, finishStation, visitedStations, stationsRoute);
-                var totalJourneyTime = this.CalculateTravelTime(result);
-                CalculateTimeToLeave(result);
-                var res = this.PrepareOutput(result, totalJourneyTime);
-                return res;
+                var calculationResult = this.CalculateRoute(startStation, finishStation, visitedStations, stationsRoute);
+                Dictionary<Station, DateTime> stationTimeCollection = null;
+                var totalJourneyTime = this.CalculateTravelTime(calculationResult, ref stationTimeCollection);
+                var timeArriveResult = SetTimeToArriveTime(requestedArriveTime, stationTimeCollection);
+                var result = this.PrepareOutput(timeArriveResult, totalJourneyTime);
+                return result;
             }
 
             return string.Empty;
+        }
+
+        private Dictionary<Station, DateTime> SetTimeToArriveTime(DateTime arriveTime, Dictionary<Station, DateTime> stationTimeCollection)
+        {
+            Dictionary<Station, DateTime> stationTimeCollectionModified = null;
+            KeyValuePair<Station, DateTime> LastItem;
+            double totalMinutes;
+            do
+            {
+                stationTimeCollectionModified = new Dictionary<Station, DateTime>();
+                foreach (var item in stationTimeCollection)
+                {
+                    var trainLine = this.TrainLines.Where(x => x.Id == item.Key.TrainLineId).FirstOrDefault();
+                    stationTimeCollectionModified.Add(item.Key, item.Value.AddMinutes(trainLine.TrainDepartureDelay));
+                }
+                LastItem = stationTimeCollectionModified.LastOrDefault();
+                stationTimeCollection = stationTimeCollectionModified;
+                totalMinutes = arriveTime.Subtract(LastItem.Value).TotalMinutes;
+            } while (totalMinutes > 10);
+
+            return stationTimeCollectionModified;
         }
 
         public Queue<Station> CalculateRoute(Station startStation, Station finishStation, Dictionary<long, long> visitedStations, Queue<Station> stationsRoute = null)
@@ -164,11 +188,19 @@
         private Queue<Station> SelectTheMostOptimal(List<Queue<Station>> routeList)
         {
             var element = routeList.Count == 0 ? null : routeList[0];
+            Dictionary<Station, DateTime> stationTimeCollection = new Dictionary<Station, DateTime>();
             if (element != null)
             {
                 for (int i = 0; i < routeList.Count; i++)
                 {
-                    if (this.CalculateTravelTime(element) > this.CalculateTravelTime(routeList[i]))
+                    // Does not matter what is inside the collection at this point so we just pass it in
+                    var elementResult = this.CalculateTravelTime(element, ref stationTimeCollection);
+                    var routeResult = this.CalculateTravelTime(routeList[i], ref stationTimeCollection);
+                    if (elementResult > routeResult)
+                    {
+                        element = routeList[i];
+                    }
+                    else if (elementResult == routeResult && element.Count > routeList[i].Count)
                     {
                         element = routeList[i];
                     }
@@ -177,27 +209,29 @@
             return element;
         }
 
-        private string PrepareOutput(Queue<Station> stations, double journeyTime)
+        private string PrepareOutput(Dictionary<Station, DateTime> stations, double journeyTime)
         {
-            Station station = stations.Dequeue();
+            KeyValuePair<Station, DateTime> firstStation = stations.FirstOrDefault();
             var totalTimeInInteger = (int)journeyTime;
 
             StringBuilder result = new StringBuilder();
-            result.AppendLine("Take: " + this.TrainLines.Where(x => x.Id == station.TrainLineId).Select(x => x.TrainLineName).FirstOrDefault() + " line at station: ");
-            result.AppendLine(station.StationName);
-            while (stations.Count > 0)
+            result.AppendLine("Take: " + this.TrainLines.Where(x => x.Id == firstStation.Key.TrainLineId).Select(x => x.TrainLineName).FirstOrDefault() + " line at station: ");
+            result.AppendLine(firstStation.Key.StationName + " at time: " + firstStation.Value.Hour + ":" + firstStation.Value.Minute);
+
+            foreach (var station in stations)
             {
-                Station nextStation = stations.Dequeue();
-                if (nextStation.TrainLineId != station.TrainLineId)
+                if (station.Equals(firstStation)) continue;
+                if (station.Key.TrainLineId != firstStation.Key.TrainLineId)
                 {
-                    result.AppendLine("At station: " + nextStation.StationName + " change for: " + this.TrainLines.Where(x => x.Id == nextStation.TrainLineId).Select(x => x.TrainLineName).FirstOrDefault() + " line");
+                    result.AppendLine("At station: " + station.Key.StationName + " change for: " + this.TrainLines.Where(x => x.Id == station.Key.TrainLineId).Select(x => x.TrainLineName).FirstOrDefault() + " line");
                 }
 
-                result.AppendLine(nextStation.StationName);
+                result.AppendLine(station.Key.StationName + " at time: " + station.Value.Hour + ":" + (station.Value.Minute < 10 ? "0" + station.Value.Minute : "" + station.Value.Minute));
 
-                station = nextStation;
+                firstStation = station;
+
             }
-            result.AppendLine("Total journey time: " + totalTimeInInteger + "(min)");
+            result.AppendLine("Estimated journey time: " + totalTimeInInteger + "(min)");
 
             return result.ToString();
         }
@@ -205,37 +239,18 @@
         // we spend 2 mins on each station
         // each train line change adds 15mins
         // train has a travel speed and distance to the next station
-        private double CalculateTravelTime(Queue<Station> stations)
+        private double CalculateTravelTime(Queue<Station> stations, ref Dictionary<Station, DateTime> stationTimeCollection)
         {
-            // t = d/s;
-            // we multiply all the stations we have to travel by 2 minutes spend on each station and minus 4 for the stations we entered and came out
-            var minutesSpendOnStations = stations.Count * 2 - 4;
-
-            long firstId = -1;
-            var minutesWhileChangingLines = stations.Select(x => x.TrainLineId).Distinct().Select(x =>
-            {
-                if (firstId != x && firstId != -1)
-                {
-                    firstId = x;
-                    return 15;
-                }
-                firstId = x;
-                return 0;
-            }).Sum();
-
-            var trainLineStationsMap = stations.GroupBy(x => x.TrainLineId).ToDictionary(x => x.Key, y => y.Where(t => t.TrainLineId == y.Key));
-
-            double trainLineTotalTime = 0;
-            foreach (var item in trainLineStationsMap)
-            {
-                var totalDistance = item.Value.Select(x => x.DistanceToPreviousStation).Sum();
-                var trainLineTravelSpeed = this.TrainLines.Where(x => x.Id == item.Key).Select(x => x.TrainTravelSpeed).FirstOrDefault();
-                trainLineTotalTime += totalDistance / trainLineTravelSpeed;
-            }
-
             var delays = CheckForDelays(stations);
 
-            var totalTime = minutesSpendOnStations + minutesWhileChangingLines + trainLineTotalTime + delays;
+            stationTimeCollection = CalculateTimeToLeave(stations);
+
+            var firstStation = stationTimeCollection.FirstOrDefault();
+            var lastStation = stationTimeCollection.LastOrDefault();
+
+            TimeSpan span = lastStation.Value.Subtract(firstStation.Value);
+
+            double totalTime = span.TotalMinutes + delays;
 
             return totalTime;
         }
@@ -294,7 +309,8 @@
                 DateTime startDate = now.Date + new TimeSpan(5, 0, 0);
                 // t = d/s;
                 var trainLineSpeed = trainLine.TrainTravelSpeed;
-                var trainLineStations = trainLine.Stations;
+
+                List<Station> trainLineStations = trainLine.Stations;
 
                 var stationStopTimeMap = new Dictionary<long, DateTime>();
                 stationStopTimeMap.Add(trainLineStations[0].Id, startDate);
@@ -312,15 +328,52 @@
             return stopTimes;
         }
 
+        private Dictionary<long, Dictionary<long, DateTime>> CalculateTimeRevers()
+        {
+            var stopTimes = new Dictionary<long, Dictionary<long, DateTime>>();
+
+            foreach (var trainLine in this.TrainLines)
+            {
+                //start datetime
+                DateTime now = DateTime.Now;
+                DateTime startDate = now.Date + new TimeSpan(5, 0, 0);
+                // t = d/s;
+                var trainLineSpeed = trainLine.TrainTravelSpeed;
+
+                List<Station> trainLineStations = trainLine.Stations;
+                trainLineStations.Reverse();
+
+                var stationStopTimeMap = new Dictionary<long, DateTime>();
+                stationStopTimeMap.Add(trainLineStations[0].Id, startDate);
+                stopTimes.Add(trainLine.Id, stationStopTimeMap);
+
+                for (int i = 1; i < trainLineStations.Count; i++)
+                {
+                    var timeTakenToReach = trainLineStations[i - 1].DistanceToPreviousStation / trainLineSpeed;
+                    //2 min spend on every station
+                    startDate = startDate + new TimeSpan(0, (int)timeTakenToReach + 2, 0);
+                    stationStopTimeMap.Add(trainLineStations[i].Id, startDate);
+                }
+            }
+
+            return stopTimes;
+        }
+
         private Dictionary<Station, DateTime> CalculateTimeToLeave(Queue<Station> stations)
         {
+            // each station is assigned a value that the first train would reach the station
             var trainStationsIds = stations.Select(x => x.TrainLineId).Distinct();
             var stationTime = new Dictionary<Station, DateTime>();
             foreach (var trainStationId in trainStationsIds)
             {
-                var stationOnTheTrainLine = stations.Where(x => x.TrainLineId == trainStationId);
-                var stopTimesOfTrainLines = this.StopTimes.Where(x => x.Key == trainStationId).ToDictionary(x => x.Key, y => y.Value);
-                foreach (var trainLineTimes in stopTimesOfTrainLines)
+                var stationOnTheTrainLine = stations.Where(x => x.TrainLineId == trainStationId).Distinct().ToList();
+
+                bool areStationsReverted = false;
+                if (stationOnTheTrainLine.Count > 1) areStationsReverted = CheckIfStationsReverted(stationOnTheTrainLine[0], stationOnTheTrainLine[1]);
+
+                var stopTimesOfTrainLines = this.StopTimesOriginalDirection.Where(x => x.Key == trainStationId).ToDictionary(x => x.Key, y => y.Value);
+                var stopTimesOfTrainLinesRevers = this.StopTimesRevers.Where(x => x.Key == trainStationId).ToDictionary(x => x.Key, y => y.Value);
+                foreach (var trainLineTimes in !areStationsReverted ? stopTimesOfTrainLines : stopTimesOfTrainLinesRevers)
                 {
                     foreach (var station in stationOnTheTrainLine)
                     {
@@ -330,9 +383,14 @@
 
                 }
             }
-            var revertResult = RevertTime(stationTime);
-            var timeFixResult = SetChangeTrainLineTime(revertResult);
+
+            var timeFixResult = SetChangeTrainLineTime(stationTime);
             return timeFixResult;
+        }
+
+        private bool CheckIfStationsReverted(Station one, Station two)
+        {
+            return one.PreviousStationId == two.Id;
         }
 
         private Dictionary<Station, DateTime> SetChangeTrainLineTime(Dictionary<Station, DateTime> stationTimeMap)
@@ -366,12 +424,14 @@
                         var stationsToModify = stationTimeMap.Where(x => x.Key.TrainLineId == stations.Key.TrainLineId);
                         skipCounter = stationsToModify.Count();
                         IncreaseTime(firstStation, stationsToModify, stationTimeMapModified);
+                        firstStation = stationTimeMapModified.LastOrDefault();
                     }
-                    else if (compareResult < 0 && minuteDifference < 10)// chaning a train add 10 minutes
+                    else if (compareResult < 0 && minuteDifference < 10)// chaning a train adds 10 minutes
                     {
                         var stationsToModify = stationTimeMap.Where(x => x.Key.TrainLineId == stations.Key.TrainLineId);
                         skipCounter = stationsToModify.Count();
                         IncreaseTime(firstStation, stationsToModify, stationTimeMapModified);
+                        firstStation = stationTimeMapModified.LastOrDefault();
                     }
                     else
                     {
@@ -412,7 +472,7 @@
                     firstStation = StationsToIncrease.FirstOrDefault();
 
                     int compareResult = DateTime.Compare(firstStation.Value, stationBeforeNewTrainLine.Value);
-                    int minuteDifference = Math.Abs(stationBeforeNewTrainLine.Value.Minute - firstStation.Value.Minute);
+                    var minuteDifference = Math.Abs(stationBeforeNewTrainLine.Value.Subtract(firstStation.Value).TotalMinutes);
                     if (compareResult > 0 && minuteDifference >= 10)// changing a train adds 10mins
                     {
                         isBigger = true;
@@ -425,39 +485,6 @@
                     stationTimeMapModified.Add(station.Key, station.Value);
                 }
             }
-        }
-
-        private Dictionary<Station, DateTime> RevertTime(Dictionary<Station, DateTime> stationTimeMap)
-        {
-            Dictionary<Station, DateTime> stationTimeMapModified = new Dictionary<Station, DateTime>();
-            var firstItem = stationTimeMap.FirstOrDefault();
-            foreach (var stationTimePair in stationTimeMap)
-            {
-                if (firstItem.Equals(stationTimePair) || firstItem.Key.TrainLineId != stationTimePair.Key.TrainLineId)
-                {
-                    stationTimeMapModified.Add(stationTimePair.Key, stationTimePair.Value);
-                    firstItem = stationTimePair;
-                    continue;
-                }
-
-                var firstTime = firstItem.Value;
-                var secondTime = stationTimePair.Value;
-                int compareTimeResult = DateTime.Compare(secondTime, firstTime);
-                if (compareTimeResult < 0)
-                {
-                    int minutesDifferent = Math.Abs(secondTime.Minute - firstTime.Minute);
-                    var value = firstTime.Date + new TimeSpan(firstTime.Hour, stationTimeMapModified.Last().Value.Minute + minutesDifferent, 0);
-                    stationTimeMapModified.Add(stationTimePair.Key, value);
-                    firstItem = stationTimePair;
-                }
-                else
-                {
-                    stationTimeMapModified.Add(stationTimePair.Key, stationTimePair.Value);
-                    firstItem = stationTimePair;
-                }
-
-            }
-            return stationTimeMapModified;
         }
     }
 }

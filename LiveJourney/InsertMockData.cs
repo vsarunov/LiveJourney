@@ -54,7 +54,7 @@ namespace LiveJourney
         {
             foreach (var item in mockedData)
             {
-                var trainLine = new TrainLine() { TrainLineName = item.Key, TrainTravelSpeed = new Random().Next(20, 50), TrainDepartureDelay = new Random().Next(3, 10), TrainLineColour = this.ColourList[new Random().Next(0, this.ColourList.Count - 1)] };
+                var trainLine = new TrainLine() { TrainLineName = item.Key, TrainTravelSpeed = new Random().Next(20, 50), TrainDepartureDelay = 10, TrainLineColour = this.ColourList[new Random().Next(0, this.ColourList.Count - 1)] };
                 var trainLineId = this.MainRepo.InsertTrainline(trainLine);
 
                 var distanceToPreviousStation = 0;

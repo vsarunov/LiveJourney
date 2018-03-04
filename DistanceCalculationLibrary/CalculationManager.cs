@@ -10,10 +10,10 @@
     public static class CalculationManager
     {
 
-        public static string CalculateRoute(string startStation, string finishStations, string timeToBeThere = null)
+        public static string CalculateRoute(string startStation, string finishStations, DateTime timeToBeThere)
         {
             DistanceCalculator calculator = new DistanceCalculator();
-            return calculator.CalculateRoute(startStation, finishStations);
+            return calculator.CalculateRoute(startStation, finishStations, timeToBeThere);
         }
     }
 }
