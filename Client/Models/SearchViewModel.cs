@@ -18,6 +18,13 @@ namespace Client.Models
         [Display(Name = "Destination Station")]
         public string DestinationStation { get; set; }
 
+        [Required]
+        [DataType(DataType.Time)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:H:mm}")]
+        public DateTime Time { get; set; }
+
+        public string Result { get; set; } = null;
+
         public IEnumerable<SelectListItem> Stations { get; set; }
     }
 }

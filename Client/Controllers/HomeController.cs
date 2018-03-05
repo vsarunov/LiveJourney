@@ -1,6 +1,7 @@
 ﻿namespace Client.Controllers
 {
     using Client.Models;
+    using Client.Services;
     using DataAccess.Repository;
     using System;
     using System.Collections.Generic;
@@ -12,6 +13,12 @@
     public class HomeController : Controller
     {
         private readonly IMainRepository MainRepo = new MainRepository();
+        private readonly IEnumerable<SelectListItem> Stations;
+
+        public HomeController()
+        {
+            Stations = GetStations();
+        }
 
         public ActionResult Index()
         {
@@ -28,10 +35,14 @@
         [HttpPost]
         public ActionResult Index(SearchViewModel postModel)
         {
-            WebService1 myService = new WebService1();
-            var date = DateTime.Now.Date + new TimeSpan(14, 0, 0);
-            myService.GetDirections("Stanmore", "Finsbury Park", date);
-            return View();
+            var result = SoapService.Execute(postModel.StartStation, postModel.DestinationStation, postModel.Time.ToString());
+
+            var viewModel = new SearchViewModel()
+            {
+                Stations = this.Stations,
+                Result = result
+            };
+            return View(viewModel);
         }
 
         private IEnumerable<SelectListItem> GetStations()

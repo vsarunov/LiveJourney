@@ -11,6 +11,7 @@
     /// <summary>
     /// Summary description for WebService1
     /// </summary>
+    [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
@@ -19,9 +20,10 @@
     {
 
         [WebMethod]
-        public string GetDirections(string startStationName, string finishStationName, DateTime arriveDate)
+        public string GetDirections(string startStationName, string finishStationName, string arriveDate)
         {
-            return CalculationManager.CalculateRoute(startStationName, finishStationName, arriveDate);
+            DateTime date = Convert.ToDateTime(arriveDate);
+            return CalculationManager.CalculateRoute(startStationName, finishStationName, date);
         }
     }
 }
