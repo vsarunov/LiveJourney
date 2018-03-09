@@ -32,7 +32,7 @@
             this.StopTimesRevers = CalculateTimeRevers();
         }
 
-        public string CalculateRoute(string startStationName, string finishStationName, DateTime requestedArriveTime)
+        public GetDirectionsResult CalculateRoute(string startStationName, string finishStationName, DateTime requestedArriveTime)
         {
             var startStation = this.Stations.Where(x => x.StationName == startStationName).FirstOrDefault();
             var finishStation = this.Stations.Where(x => x.StationName == finishStationName).FirstOrDefault();
@@ -47,10 +47,17 @@
                 var totalJourneyTime = this.CalculateTravelTime(calculationResult, ref stationTimeCollection);
                 var timeArriveResult = SetTimeToArriveTime(requestedArriveTime, stationTimeCollection);
                 var result = this.PrepareOutput(timeArriveResult, totalJourneyTime);
-                return result;
+
+                var resultingObject = new GetDirectionsResult()
+                {
+                    Stations = timeArriveResult.Select(x => new StationTimePair() { Station = x.Key, Time = x.Value }).ToList(),
+                    TotalJourneyTime = totalJourneyTime
+                };
+
+                return resultingObject;
             }
 
-            return "Could not find this stations";
+            return null;
         }
 
         private Dictionary<Station, DateTime> SetTimeToArriveTime(DateTime arriveTime, Dictionary<Station, DateTime> stationTimeCollection)

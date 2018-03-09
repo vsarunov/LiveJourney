@@ -40,7 +40,6 @@
             var viewModel = new SearchViewModel()
             {
                 Stations = this.Stations,
-                Result = result
             };
             return View(viewModel);
         }

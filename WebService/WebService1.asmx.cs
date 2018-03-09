@@ -1,6 +1,7 @@
 ﻿namespace WebService
 {
     using DistanceCalculationLibrary;
+    using Infrastructure.Entities;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -20,7 +21,7 @@
     {
 
         [WebMethod]
-        public string GetDirections(string startStationName, string finishStationName, string arriveDate)
+        public GetDirectionsResult GetDirections(string startStationName, string finishStationName, string arriveDate)
         {
             DateTime date = Convert.ToDateTime(arriveDate);
             return CalculationManager.CalculateRoute(startStationName, finishStationName, date);

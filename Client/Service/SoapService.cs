@@ -1,22 +1,23 @@
-﻿using System;
+﻿using Infrastructure.Entities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Serialization.Formatters.Soap;
+using System.ServiceModel.Channels;
 using System.Text;
 using System.Web;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace Client.Services
 {
     public class SoapService
     {
-        /// <summary>
-        /// Execute a Soap WebService call
-        /// </summary>
-        public static string Execute(string startStation, string destinationStation, string date)
+        public static GetDirectionsResult Execute(string startStation, string destinationStation, string date)
         {
-            StringBuilder builder = new StringBuilder();
             HttpWebRequest request = CreateWebRequest();
             XmlDocument soapEnvelopeXml = new XmlDocument();
             XmlDocument outputXml = new XmlDocument();
@@ -45,22 +46,30 @@ namespace Client.Services
                 {
                     using (StreamReader rd = new StreamReader(response.GetResponseStream()))
                     {
-                        string soapResult = rd.ReadToEnd();
-                        outputXml.LoadXml(soapResult);
-                        builder.AppendLine(outputXml.InnerText);
+                        string res = rd.ReadToEnd();
+
+                        var xdoc = XDocument.Parse(res);
+
+                        var result = from p in xdoc.Descendants()
+                                     where p.Name.LocalName == "GetDirectionsResult"
+                                     select p;
+
+                        var firstElementAsString = result.FirstOrDefault().ToString().Replace(" xmlns=\"http://tempuri.org/\"", "");
+                        xdoc = XDocument.Parse(firstElementAsString);
+
+                        var serializer = new XmlSerializer(typeof(GetDirectionsResult));
+                        var responseObj =
+                              (GetDirectionsResult)serializer.Deserialize(xdoc.CreateReader());
+                        return responseObj;
                     }
                 }
             }
             catch (Exception e)
             {
-                builder.ToString();
+                return null;
             }
-            return builder.ToString();
         }
-        /// <summary>
-        /// Create a soap webrequest to [Url]
-        /// </summary>
-        /// <returns></returns>
+
         public static HttpWebRequest CreateWebRequest()
         {
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(@"http://localhost:54050/WebService1.asmx?op=GetDirections");

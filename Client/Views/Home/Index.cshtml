@@ -3,7 +3,8 @@
     ViewBag.Title = "Home Page";
 }
 
-<form action="Home/Index" method="post">
+@using (Html.BeginForm())
+{
     <div class="form-group">
         @Html.LabelFor(m => m.StartStation)
         @Html.ValidationMessageFor(m => m.StartStation)
@@ -21,8 +22,8 @@
         @Html.ValidationMessageFor(m => m.Time)
     </div>
 
-    <button type="submit" class="btn btn-primary">Find path</button>
-</form>
+    <input type="submit" class="btn btn-primary" value="Find path"/>
+}
 
 @if (Model.Result != null)
 {

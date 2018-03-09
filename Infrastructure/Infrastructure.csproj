@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\DelayModel.cs" />
+    <Compile Include="Entities\ResultingPath.cs" />
     <Compile Include="Entities\Station.cs" />
+    <Compile Include="Entities\StationTimePair.cs" />
     <Compile Include="Entities\TrainLine.cs" />
     <Compile Include="Entities\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
