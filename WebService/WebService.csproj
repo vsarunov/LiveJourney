@@ -103,6 +103,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
+      <Project>{3a880647-881e-4865-88c1-30b5137fd3d8}</Project>
+      <Name>DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DistanceCalculationLibrary\DistanceCalculationLibrary.csproj">
       <Project>{b3d8f031-b623-46e8-b81a-21eb267a3b38}</Project>
       <Name>DistanceCalculationLibrary</Name>

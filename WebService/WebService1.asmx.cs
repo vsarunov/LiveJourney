@@ -1,5 +1,6 @@
 ﻿namespace WebService
 {
+    using DataAccess.Repository;
     using DistanceCalculationLibrary;
     using Infrastructure.Entities;
     using System;

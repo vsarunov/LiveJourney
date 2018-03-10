@@ -16,7 +16,7 @@ namespace Client.Services
 {
     public class SoapService
     {
-        public static GetDirectionsResult Execute(string startStation, string destinationStation, string date)
+        public static GetDirectionsResult ExecuteGetPath(string startStation, string destinationStation, string date)
         {
             HttpWebRequest request = CreateWebRequest();
             XmlDocument soapEnvelopeXml = new XmlDocument();
