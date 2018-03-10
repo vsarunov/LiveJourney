@@ -15,22 +15,29 @@
     public class HomeController : Controller
     {
         private readonly IMainRepository MainRepo = new MainRepository();
-        private readonly IEnumerable<SelectListItem> Stations;
-        private readonly IEnumerable<TrainLine> TrainLines;
+        private readonly IEnumerable<Station> Stations;
+        private readonly List<TrainLine> TrainLines;
+        private readonly IEnumerable<SelectListItem> StationsForView;
 
         public HomeController()
         {
-            Stations = GetStations();
-            TrainLines = GetTrainLines();
+            Stations = MainRepo.ReadStations();
+            TrainLines = MainRepo.ReadTrainLines().ToList();
+            StationsForView = this.GetViewStations();
+            foreach (var item in TrainLines)
+            {
+                item.Stations = Stations.Where(x => x.TrainLineId == item.Id).ToList();
+            }
         }
 
         public ActionResult Index()
         {
-            var stations = GetStations();
+            var stations = GetViewStations();
 
             var model = new SearchViewModel()
             {
-                Stations = stations
+                Stations = stations,
+                TrainLines = this.TrainLines
             };
 
             return View(model);
@@ -43,22 +50,18 @@
             var stringResult = this.PrepareOutput(result.Stations.ToDictionary(x => x.Station, y => y.Time), result.TotalJourneyTime);
             var viewModel = new SearchViewModel()
             {
-                Stations = this.Stations,
-                Result = stringResult
+                Stations = this.StationsForView,
+                Result = stringResult,
+                TrainLines = this.TrainLines
             };
             return View(viewModel);
         }
 
-        private IEnumerable<TrainLine> GetTrainLines()
-        {
-            return MainRepo.ReadTrainLines();
-        }
-
-        private IEnumerable<SelectListItem> GetStations()
+        private IEnumerable<SelectListItem> GetViewStations()
         {
             List<SelectListItem> ddl = new List<SelectListItem>();
 
-            var Stations = MainRepo.ReadStations().Select(x => x.StationName).Distinct();
+            var Stations = this.Stations.Select(x => x.StationName).Distinct();
 
             foreach (var stationName in Stations)
             {

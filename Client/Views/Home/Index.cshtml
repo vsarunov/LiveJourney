@@ -22,11 +22,94 @@
         @Html.ValidationMessageFor(m => m.Time)
     </div>
 
-    <input type="submit" class="btn btn-primary" value="Find path"/>
+    <input type="submit" class="btn btn-primary" value="Find path" />
 }
 
 @if (Model.Result != null)
 {
     <p>@Model.Result</p>
 }
+
+<ul class="nav nav-tabs">
+
+    @for (int i = 0; i < Model.TrainLines.Count; i++)
+    {
+        string active = "";
+        if (i == 0) { active += "active"; }
+
+        <li class="@active"><a data-toggle="tab" href="#@Model.TrainLines[i].TrainLineName.Split(' ')[0]">@Model.TrainLines[i].TrainLineName</a></li>
+    }
+</ul>
+
+
+    <div class="tab-content">
+        @for (int i = 0; i < Model.TrainLines.Count; i++)
+        {
+            string active = "tab-pane fade";
+            if (i == 0) { active += " in active"; }
+
+            <div id="@Model.TrainLines[i].TrainLineName.Split(' ')[0]" class="@active">
+                @{
+                    int trainLineCounter = 100;
+                    int stationCounter = 50;
+                    <h3>@Model.TrainLines[i].TrainLineName</h3>
+                    <svg width="100%" height="2200">
+
+                        @for (int t = 0; t < Model.TrainLines[i].Stations.Count; t++)
+                {
+                    if (t == Model.TrainLines[i].Stations.Count - 1)
+                    {
+                        stationCounter -= 50;
+                    }
+                    <path id="lineAB" d="M @trainLineCounter @stationCounter  l 0 40" stroke="@Model.TrainLines[i].TrainLineColour" stroke-width="3" fill="none" />
+                            stationCounter += 50;
+
+                        }
+
+
+                        @{
+                            stationCounter = 50;
+                        }
+                        <!-- Mark relevant points -->
+                        <g stroke="black" stroke-width="3" fill="black">
+                            @for (int t = 0; t < Model.TrainLines[i].Stations.Count; t++)
+                            {
+                                <circle id="pointA" cx="@trainLineCounter" cy="@stationCounter" r="3" />
+                                stationCounter += 50;
+                            }
+                        </g>
+
+
+                        @{
+                            stationCounter = 50;
+                        }
+
+                        <g font-size="15" font-family="sans-serif" fill="black" stroke="none" text-anchor="middle">
+                            @for (int t = 0; t < Model.TrainLines[i].Stations.Count; t++)
+                            {
+                                var trainLineToChange = Model.TrainLines.Where(x => x.Stations.Any(y => y.StationName == Model.TrainLines[i].Stations[t].StationName) && x.Id!= Model.TrainLines[i].Id).Select(x=>x.TrainLineName);
+                                int dxValue = (Model.TrainLines[i].Stations[t].StationName.Length + trainLineToChange.Count()) > 3 ? 300 : 100;
+                                if (trainLineToChange.Count() > 0)
+                                {
+                                    string changeFor = Model.TrainLines[i].Stations[t].StationName +", Change for: "+ string.Join(", ", trainLineToChange)+" lines";
+
+                                     @:<text x="@trainLineCounter" y="@stationCounter" dx="@dxValue">@changeFor</text>
+                                }
+                                else
+                                {
+                                    @:<text x="@trainLineCounter" y="@stationCounter" dx="@dxValue">@Model.TrainLines[i].Stations[t].StationName</text>
+                                }
+                        stationCounter += 50;
+                            }
+                        </g>
+
+
+                        <!-- Label the points -->
+
+                        @{ trainLineCounter += 100; }
+                    </svg>
+                }
+            </div>
+                            }
+    </div>
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Infrastructure.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -26,5 +27,6 @@ namespace Client.Models
         public string Result { get; set; } = null;
 
         public IEnumerable<SelectListItem> Stations { get; set; }
+        public List<TrainLine> TrainLines { get; set; }
     }
 }
