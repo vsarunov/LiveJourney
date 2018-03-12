@@ -48,7 +48,6 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.DeleteTrainLineButton = new System.Windows.Forms.Button();
             this.EditTrainLineButton = new System.Windows.Forms.Button();
-            this.AddDelayButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.StationListView = new System.Windows.Forms.ListView();
@@ -99,7 +98,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 789F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 743F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(647, 743);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
@@ -249,7 +248,6 @@
             this.tableLayoutPanel4.Controls.Add(this.TrainLineListView, 2, 0);
             this.tableLayoutPanel4.Controls.Add(this.DeleteTrainLineButton, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.EditTrainLineButton, 0, 2);
-            this.tableLayoutPanel4.Controls.Add(this.AddDelayButton, 0, 3);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(171, 3);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -325,18 +323,6 @@
             this.EditTrainLineButton.Text = "Edit Train Line/Add delay";
             this.EditTrainLineButton.UseVisualStyleBackColor = true;
             this.EditTrainLineButton.Click += new System.EventHandler(this.EditTrainLineButton_Click);
-            // 
-            // AddDelayButton
-            // 
-            this.AddDelayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.AddDelayButton.Location = new System.Drawing.Point(3, 690);
-            this.AddDelayButton.Name = "AddDelayButton";
-            this.AddDelayButton.Size = new System.Drawing.Size(467, 44);
-            this.AddDelayButton.TabIndex = 3;
-            this.AddDelayButton.Text = "Add delay to the train line";
-            this.AddDelayButton.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel5
             // 
@@ -574,6 +560,5 @@
         private System.Windows.Forms.Label label2;
         private MyCustomTextBox.MyBox TravelSpeedTextBox;
         private MyCustomTextBox.MyBox DepartureTimeTextBox;
-        private System.Windows.Forms.Button AddDelayButton;
     }
 }
