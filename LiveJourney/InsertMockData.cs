@@ -21,11 +21,15 @@ namespace LiveJourney
 
             if (isPopulated == 0 || isPopulated == -1)
             {
-                MessageBox.Show("Mocked data is being inserted this may take up to 5 minutes before application starts, press OK to continue");
-                this.PopulateMockedData();
-                this.PopualteColourList();
-                this.StartInserting();
-                this.MainRepo.InsertConfig();
+                DialogResult dialogResult = MessageBox.Show("Sure", "Insert mocked data?", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    MessageBox.Show("Mocked data is being inserted this may take up to 5 minutes before application starts, press OK to continue");
+                    this.PopulateMockedData();
+                    this.PopualteColourList();
+                    this.StartInserting();
+                    this.MainRepo.InsertConfig();
+                }
             }
         }
 
