@@ -139,7 +139,8 @@ namespace LiveJourney
                 if (startStation != null && finishStation != null)
                 {
                     var delayObject = new DelayModel() { DelayTime = long.Parse(this.DelayTimeBox.Text), StartDelayStationId = startStation.Id, EndDelayStationId = finishStation.Id, TrainLineId = this.TrainLineToEdit.Id, TimeStamp = DateTime.Now.Ticks };
-                    this.MainRepo.InsertDelay(delayObject);
+                    var delayId = this.MainRepo.InsertDelay(delayObject);
+                    delayObject.Id = delayId;
                     this.Delays.Add(delayObject);
                     this.listView1.Items.Add(new ListViewItem(new[] { this.DelayStartStaionComboBox.Text, this.DelayFinishComboBox.Text, this.DelayTimeBox.Text }));
                     this.DelayStartStaionComboBox.Text = string.Empty;
